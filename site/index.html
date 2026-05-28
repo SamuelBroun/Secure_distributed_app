@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>המתחם בבית אל על — דו רה מי | מקום חדש להורים וילדים בגיל הרך</title>
+  <meta name="description" content="מרחב חווייתי יוקרתי מבית דו רה מי — גני ילדים, Open Play, Parents Lounge, Salt Room וחוגים. מקום חדש להורים וילדים בגיל הרך."/>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Heebo', 'system-ui', 'sans-serif'],
+            display: ['Frank Ruhl Libre', 'Heebo', 'serif'],
+          },
+          colors: {
+            mint:   { 50:'#F2FAF5', 100:'#E3F4EB', 200:'#C7EAD7', 300:'#A8DEC1', 400:'#8FD0AE' },
+            sand:   { 50:'#FBF7F0', 100:'#F5EDDD', 200:'#EDE0CA', 300:'#E3D0B0', 400:'#D4BC92' },
+            sky:    { 50:'#F4F8FB', 100:'#E5EFF5', 200:'#D0E1ED', 300:'#B6CFE0', 400:'#94B6CE' },
+            cream:  { DEFAULT:'#FAF6F0', deep:'#F5EFE6' },
+            gold:   { soft:'#C9A961', light:'#D9BE82', deep:'#A88B4A' },
+            wood:   { DEFAULT:'#C4A57B', deep:'#A88762' },
+            ink:    { DEFAULT:'#2A2826', soft:'#4A4744', muted:'#7A7570' },
+          },
+          boxShadow: {
+            'soft':   '0 4px 24px -8px rgba(60, 50, 35, 0.08)',
+            'softer': '0 2px 12px -4px rgba(60, 50, 35, 0.06)',
+            'glow':   '0 20px 60px -20px rgba(201, 169, 97, 0.25)',
+            'inner-soft': 'inset 0 1px 0 0 rgba(255,255,255,0.5)',
+          },
+          borderRadius: { '4xl':'2rem', '5xl':'2.5rem' },
+          animation: {
+            'float-slow':  'float 9s ease-in-out infinite',
+            'float-med':   'float 7s ease-in-out infinite',
+            'float-fast':  'float 5s ease-in-out infinite',
+            'fade-up':     'fadeUp 0.9s ease-out forwards',
+            'fade-in':     'fadeIn 1.1s ease-out forwards',
+            'shimmer':     'shimmer 3.4s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%,100%': { transform: 'translateY(0) translateX(0)' },
+              '50%':     { transform: 'translateY(-18px) translateX(6px)' },
+            },
+            fadeUp: {
+              '0%':   { opacity: 0, transform: 'translateY(24px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%':   { opacity: 0 },
+              '100%': { opacity: 1 },
+            },
+            shimmer: {
+              '0%,100%': { opacity: 0.55 },
+              '50%':     { opacity: 0.9  },
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Heebo', system-ui, sans-serif;
+      background: #FAF6F0;
+      color: #2A2826;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    .font-display { font-family: 'Frank Ruhl Libre', 'Heebo', serif; letter-spacing: -0.01em; }
+
+    /* Soft gradient backdrop */
+    .bg-aurora {
+      background:
+        radial-gradient(60% 50% at 80% 10%, rgba(199,234,215,0.55) 0%, transparent 60%),
+        radial-gradient(50% 45% at 12% 25%, rgba(208,225,237,0.55) 0%, transparent 60%),
+        radial-gradient(55% 40% at 50% 95%, rgba(237,224,202,0.55) 0%, transparent 60%),
+        linear-gradient(180deg, #FAF6F0 0%, #F5EFE6 100%);
+    }
+    .bg-aurora-soft {
+      background:
+        radial-gradient(45% 38% at 92% 18%, rgba(199,234,215,0.45) 0%, transparent 60%),
+        radial-gradient(45% 38% at 8% 82%, rgba(208,225,237,0.45) 0%, transparent 60%),
+        #FAF6F0;
+    }
+
+    /* Glass card */
+    .glass {
+      background: rgba(255, 251, 244, 0.65);
+      backdrop-filter: blur(18px) saturate(120%);
+      -webkit-backdrop-filter: blur(18px) saturate(120%);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow:
+        0 1px 0 0 rgba(255,255,255,0.7) inset,
+        0 20px 50px -22px rgba(60, 50, 35, 0.12);
+    }
+    .glass-strong {
+      background: rgba(255, 251, 244, 0.82);
+      backdrop-filter: blur(22px) saturate(130%);
+      -webkit-backdrop-filter: blur(22px) saturate(130%);
+      border: 1px solid rgba(255,255,255,0.7);
+    }
+
+    /* Gold underline accent */
+    .accent-line {
+      width: 56px; height: 2px;
+      background: linear-gradient(90deg, transparent, #C9A961, transparent);
+      border-radius: 2px;
+    }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s ease-out, transform .9s ease-out; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Smooth focus ring */
+    *:focus-visible {
+      outline: 2px solid #C9A961;
+      outline-offset: 3px;
+      border-radius: 12px;
+    }
+
+    /* Marquee for pill row */
+    .pill { transition: transform .25s ease-out, background-color .25s ease-out, box-shadow .25s ease-out; }
+    .pill:hover { transform: translateY(-2px); }
+
+    /* Hero image grid blobs */
+    .blob-mask-1 { border-radius: 64% 36% 60% 40% / 50% 60% 40% 50%; }
+    .blob-mask-2 { border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%; }
+    .blob-mask-3 { border-radius: 55% 45% 65% 35% / 45% 55% 45% 55%; }
+    .blob-mask-4 { border-radius: 38% 62% 48% 52% / 55% 45% 55% 45%; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+
+    /* Hover lift */
+    .lift { transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease; }
+    .lift:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -20px rgba(60, 50, 35, 0.14); }
+
+    /* Number counter style */
+    .stat-num { font-feature-settings: "tnum" on; }
+  </style>
+</head>
+
+<body class="bg-cream antialiased">
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="fixed top-4 inset-x-4 z-50">
+    <nav class="glass-strong mx-auto max-w-7xl rounded-full px-5 sm:px-7 py-3 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-2.5">
+        <span class="relative inline-flex w-9 h-9 rounded-full bg-gradient-to-br from-mint-200 to-sky-200 items-center justify-center shadow-softer">
+          <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.7L12 16.2 6.8 19l1-5.7L3.6 9.1l5.8-.8L12 3z"/>
+          </svg>
+        </span>
+        <div class="leading-tight">
+          <p class="font-display text-lg text-ink">בית אל על</p>
+          <p class="text-[10px] tracking-widest text-ink-muted uppercase">דו רה מי · DoReMi</p>
+        </div>
+      </a>
+
+      <ul class="hidden lg:flex items-center gap-7 text-sm text-ink-soft">
+        <li><a class="hover:text-ink transition-colors" href="#about">מי אנחנו</a></li>
+        <li><a class="hover:text-ink transition-colors" href="#spaces">המרחבים</a></li>
+        <li><a class="hover:text-ink transition-colors" href="#gan">גני הילדים</a></li>
+        <li><a class="hover:text-ink transition-colors" href="#why">למה שונה</a></li>
+        <li><a class="hover:text-ink transition-colors" href="#schedule">מערכת שעות</a></li>
+        <li><a class="hover:text-ink transition-colors" href="#voices">המלצות</a></li>
+      </ul>
+
+      <div class="flex items-center gap-2">
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 rounded-full bg-ink text-cream px-5 py-2.5 text-sm font-medium shadow-soft hover:bg-ink-soft transition-colors cursor-pointer">
+          קבעו ביקור
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+        </a>
+        <button id="navToggle" class="lg:hidden glass rounded-full w-10 h-10 flex items-center justify-center cursor-pointer" aria-label="פתיחת תפריט">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </nav>
+    <div id="mobileMenu" class="hidden lg:hidden mt-2 glass-strong mx-auto max-w-7xl rounded-3xl p-4 text-ink-soft">
+      <a class="block py-2 px-3 rounded-xl hover:bg-cream-deep" href="#about">מי אנחנו</a>
+      <a class="block py-2 px-3 rounded-xl hover:bg-cream-deep" href="#spaces">המרחבים</a>
+      <a class="block py-2 px-3 rounded-xl hover:bg-cream-deep" href="#gan">גני הילדים</a>
+      <a class="block py-2 px-3 rounded-xl hover:bg-cream-deep" href="#why">למה שונה</a>
+      <a class="block py-2 px-3 rounded-xl hover:bg-cream-deep" href="#schedule">מערכת שעות</a>
+      <a class="block py-2 px-3 rounded-xl hover:bg-cream-deep" href="#voices">המלצות</a>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" class="relative bg-aurora pt-32 pb-24 overflow-hidden">
+    <!-- floating shapes -->
+    <div aria-hidden="true" class="absolute top-32 -right-16 w-72 h-72 bg-mint-200/60 blob-mask-1 blur-2xl animate-float-slow"></div>
+    <div aria-hidden="true" class="absolute bottom-10 -left-20 w-80 h-80 bg-sky-200/55 blob-mask-2 blur-2xl animate-float-med"></div>
+    <div aria-hidden="true" class="absolute top-1/2 left-1/3 w-40 h-40 bg-sand-200/60 blob-mask-3 blur-xl animate-float-fast"></div>
+
+    <div class="relative max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <!-- Text col -->
+        <div class="lg:col-span-7 animate-fade-up">
+          <span class="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 text-xs text-ink-soft tracking-wide">
+            <span class="w-1.5 h-1.5 rounded-full bg-mint-400 animate-shimmer"></span>
+            פתיחה רשמית · בית אל על
+          </span>
+
+          <h1 class="font-display font-light text-5xl sm:text-6xl lg:text-7xl text-ink leading-[1.05] mt-6">
+            מקום חדש <br/>
+            <span class="font-medium">להורים וילדים</span> <br/>
+            <span class="text-ink-soft">בגיל הרך.</span>
+          </h1>
+
+          <p class="mt-7 text-lg text-ink-soft leading-relaxed max-w-2xl">
+            מרחב חווייתי מבית <em class="not-italic font-medium text-ink">דו רה מי</em>,
+            שנבנה כדי לחבר בין התפתחות, משחק, קהילה וזמן איכות —
+            מהבוקר ועד אחר הצהריים.
+          </p>
+
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href="#contact" class="inline-flex items-center gap-2 rounded-full bg-ink text-cream px-7 py-3.5 font-medium shadow-glow hover:bg-ink-soft transition-all hover:-translate-y-0.5 cursor-pointer">
+              קבעו ביקור
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+            </a>
+            <a href="#contact" class="inline-flex items-center gap-2 glass rounded-full px-7 py-3.5 text-ink font-medium hover:bg-white/80 transition-colors cursor-pointer">השאירו פרטים</a>
+            <a href="#schedule" class="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-ink-soft hover:text-ink font-medium transition-colors cursor-pointer">
+              למערכת הפעילויות
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+
+          <!-- trust strip -->
+          <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-sm text-ink-muted">
+            <div class="flex items-center gap-2">
+              <div class="flex -space-x-2 space-x-reverse">
+                <div class="w-8 h-8 rounded-full ring-2 ring-cream bg-mint-300"></div>
+                <div class="w-8 h-8 rounded-full ring-2 ring-cream bg-sand-300"></div>
+                <div class="w-8 h-8 rounded-full ring-2 ring-cream bg-sky-300"></div>
+                <div class="w-8 h-8 rounded-full ring-2 ring-cream bg-gold-light"></div>
+              </div>
+              <span>קהילה של מאות משפחות</span>
+            </div>
+            <span class="hidden sm:inline-block w-px h-5 bg-ink-muted/30"></span>
+            <div class="flex items-center gap-1.5">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold-soft" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21l1.2-6.9-5-4.9 6.9-1L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold-soft" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21l1.2-6.9-5-4.9 6.9-1L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold-soft" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21l1.2-6.9-5-4.9 6.9-1L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold-soft" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21l1.2-6.9-5-4.9 6.9-1L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold-soft" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21l1.2-6.9-5-4.9 6.9-1L12 2z"/></svg>
+              <span class="mr-2">המלצות הורים</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual col: 4 blob images -->
+        <div class="lg:col-span-5 relative h-[520px] lg:h-[600px]">
+          <div class="absolute top-0 right-0 w-56 h-72 blob-mask-1 overflow-hidden shadow-soft animate-float-slow ring-1 ring-white/50">
+            <img alt="ילדים משחקים במתחם" loading="lazy" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80&auto=format&fit=crop"/>
+          </div>
+          <div class="absolute top-12 left-0 w-44 h-44 blob-mask-2 overflow-hidden shadow-soft animate-float-med ring-1 ring-white/50">
+            <img alt="קפה בפינת ההורים" loading="lazy" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&q=80&auto=format&fit=crop"/>
+          </div>
+          <div class="absolute bottom-8 right-10 w-48 h-56 blob-mask-3 overflow-hidden shadow-soft animate-float-fast ring-1 ring-white/50">
+            <img alt="הורה וילד בפעילות" loading="lazy" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1559535332-db9971090158?w=500&q=80&auto=format&fit=crop"/>
+          </div>
+          <div class="absolute bottom-0 left-4 w-40 h-40 blob-mask-4 overflow-hidden shadow-soft animate-float-slow ring-1 ring-white/50">
+            <img alt="מרחב Open Play" loading="lazy" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1587016321101-c52b18e92bda?w=500&q=80&auto=format&fit=crop"/>
+          </div>
+
+          <!-- floating glass badge -->
+          <div class="absolute top-6 left-6 glass rounded-2xl px-4 py-3 max-w-[200px] animate-fade-in" style="animation-delay:.4s">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-mint-200 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10z"/></svg>
+              </span>
+              <div>
+                <p class="text-xs text-ink-muted">חוויה למשפחה</p>
+                <p class="text-sm font-medium text-ink">מהבוקר עד אחה״צ</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-2 right-2 glass rounded-2xl px-4 py-3 animate-fade-in" style="animation-delay:.6s">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-mint-400"></span>
+              <p class="text-xs text-ink-soft">פתוחים היום · 08:00–19:00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- service pill row -->
+      <div class="mt-20 flex flex-wrap gap-3 justify-center">
+        <span class="pill glass rounded-full px-5 py-2 text-sm text-ink-soft">גני ילדים</span>
+        <span class="pill glass rounded-full px-5 py-2 text-sm text-ink-soft">Open Play</span>
+        <span class="pill glass rounded-full px-5 py-2 text-sm text-ink-soft">Parents Lounge</span>
+        <span class="pill glass rounded-full px-5 py-2 text-sm text-ink-soft">Salt Room</span>
+        <span class="pill glass rounded-full px-5 py-2 text-sm text-ink-soft">חוגי העשרה</span>
+        <span class="pill glass rounded-full px-5 py-2 text-sm text-ink-soft">גן עם אמא</span>
+        <span class="pill glass rounded-full px-5 py-2 text-sm text-ink-soft">פילאטיס אמהות</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="py-28 bg-cream relative">
+    <div class="max-w-5xl mx-auto px-5 sm:px-8 text-center reveal">
+      <div class="accent-line mx-auto"></div>
+      <p class="mt-5 text-sm tracking-widest text-gold-deep uppercase">מי אנחנו</p>
+      <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mt-3 leading-[1.1]">
+        יותר מגן.<br class="sm:hidden"/>
+        <span class="text-ink-soft">יותר מחוג.</span>
+      </h2>
+      <p class="mt-8 text-lg sm:text-xl text-ink-soft leading-relaxed">
+        המתחם נבנה מתוך הבנה פשוטה:
+        הורים לילדים בגיל הרך צריכים יותר ממסגרת.
+        הם צריכים מקום שמרגיש נכון.
+        מקום שבו הילד משחק, מתפתח וחווה —
+        וההורה נהנה מקהילה, מרחב רגוע וזמן איכות אמיתי.
+      </p>
+
+      <!-- stat row -->
+      <div class="mt-16 grid sm:grid-cols-3 gap-6 sm:gap-4">
+        <div class="glass rounded-3xl p-7 text-right lift">
+          <p class="stat-num font-display text-5xl text-ink" data-count="6">0</p>
+          <p class="mt-2 text-ink-soft text-sm">מרחבים ייחודיים תחת קורת גג אחת</p>
+        </div>
+        <div class="glass rounded-3xl p-7 text-right lift">
+          <p class="stat-num font-display text-5xl text-ink" data-count="400">0</p>
+          <p class="mt-2 text-ink-soft text-sm">משפחות בקהילת בית אל על</p>
+        </div>
+        <div class="glass rounded-3xl p-7 text-right lift">
+          <p class="stat-num font-display text-5xl text-ink"><span data-count="11">0</span><span class="text-gold-soft">+</span></p>
+          <p class="mt-2 text-ink-soft text-sm">שעות פעילות יומיות לכל המשפחה</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPACES (Cards) ============ -->
+  <section id="spaces" class="py-28 bg-aurora-soft relative">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="flex items-end justify-between flex-wrap gap-6 reveal">
+        <div>
+          <div class="accent-line"></div>
+          <p class="mt-5 text-sm tracking-widest text-gold-deep uppercase">מה יש במתחם</p>
+          <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mt-3 leading-tight">
+            ששת המרחבים<br/>
+            <span class="text-ink-soft">שעובדים יחד כמערכת אחת.</span>
+          </h2>
+        </div>
+        <p class="max-w-md text-ink-soft leading-relaxed">
+          מהבוקר ועד הערב — כל מרחב נבנה מתוך מחשבה על שלב התפתחותי אחר,
+          על ההורה, ועל הרגעים הקטנים שיוצרים את החוויה.
+        </p>
+      </div>
+
+      <!-- bento -->
+      <div class="mt-14 grid grid-cols-1 md:grid-cols-6 gap-5">
+        <!-- Open Play -->
+        <article class="md:col-span-3 glass-strong rounded-4xl p-8 lift cursor-pointer overflow-hidden relative min-h-[300px]">
+          <div class="absolute -top-10 -left-10 w-48 h-48 bg-mint-200/60 blob-mask-1 blur-2xl"></div>
+          <div class="relative">
+            <div class="inline-flex w-12 h-12 rounded-2xl bg-mint-200 items-center justify-center mb-5">
+              <svg viewBox="0 0 24 24" class="w-6 h-6 text-ink" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+            </div>
+            <h3 class="font-display text-3xl text-ink">Open Play</h3>
+            <p class="mt-3 text-ink-soft leading-relaxed max-w-md">מרחב משחק חווייתי ומעוצב לגיל הרך — מתחת לתאורה רכה, עם תחנות התפתחותיות שמזמינות סקרנות.</p>
+          </div>
+        </article>
+
+        <!-- Parents Lounge -->
+        <article class="md:col-span-3 rounded-4xl p-8 bg-ink text-cream lift cursor-pointer overflow-hidden relative min-h-[300px]">
+          <div class="absolute -bottom-12 -right-12 w-56 h-56 bg-gold-soft/20 blob-mask-2 blur-2xl"></div>
+          <div class="relative">
+            <div class="inline-flex w-12 h-12 rounded-2xl bg-cream/15 items-center justify-center mb-5">
+              <svg viewBox="0 0 24 24" class="w-6 h-6 text-cream" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 010 8h-1"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><path d="M7 2v3M11 2v3M15 2v3"/></svg>
+            </div>
+            <h3 class="font-display text-3xl">Parents Lounge</h3>
+            <p class="mt-3 text-cream/75 leading-relaxed max-w-md">פינת קפה רגועה לעבודה, מפגש ושיחה. שקט שמרגיש כמו בית מלון בוטיק, בלי לוותר על הקרבה לילדים.</p>
+            <p class="mt-5 inline-flex items-center gap-2 text-sm text-gold-light">
+              חוויה גם בשבילך
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+            </p>
+          </div>
+        </article>
+
+        <!-- Salt Room -->
+        <article class="md:col-span-2 glass-strong rounded-4xl p-7 lift cursor-pointer overflow-hidden relative min-h-[260px]">
+          <div class="inline-flex w-11 h-11 rounded-2xl bg-sky-200 items-center justify-center mb-4">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/><circle cx="12" cy="12" r="3.2"/></svg>
+          </div>
+          <h3 class="font-display text-2xl text-ink">Salt Room</h3>
+          <p class="mt-2 text-ink-soft text-sm leading-relaxed">חדר מלח ייחודי לילדים ולהורים — אוויר נקי, רוגע, נשימה עמוקה.</p>
+        </article>
+
+        <!-- Hugim -->
+        <article class="md:col-span-2 rounded-4xl p-7 bg-sand-100 lift cursor-pointer overflow-hidden relative min-h-[260px]">
+          <div class="inline-flex w-11 h-11 rounded-2xl bg-gold-light/40 items-center justify-center mb-4">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <h3 class="font-display text-2xl text-ink">חוגי העשרה</h3>
+          <p class="mt-2 text-ink-soft text-sm leading-relaxed">מוזיקה, תנועה, יוגה, אנגלית ועוד — בהובלת מומחים אהובים.</p>
+        </article>
+
+        <!-- Gan im Ima -->
+        <article class="md:col-span-2 glass-strong rounded-4xl p-7 lift cursor-pointer overflow-hidden relative min-h-[260px]">
+          <div class="inline-flex w-11 h-11 rounded-2xl bg-mint-200 items-center justify-center mb-4">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><circle cx="17" cy="6" r="2"/><path d="M19 21v-1a3 3 0 00-3-3"/></svg>
+          </div>
+          <h3 class="font-display text-2xl text-ink">גן עם אמא</h3>
+          <p class="mt-2 text-ink-soft text-sm leading-relaxed">פעילויות בוקר חמות להורים וילדים בגיל הרך, בקצב שלכם.</p>
+        </article>
+
+        <!-- Pilates -->
+        <article class="md:col-span-6 rounded-4xl p-8 bg-gradient-to-l from-sky-100 via-cream to-mint-100 lift cursor-pointer overflow-hidden relative min-h-[180px]">
+          <div class="flex flex-wrap items-center justify-between gap-6 relative">
+            <div class="flex items-center gap-5">
+              <div class="inline-flex w-14 h-14 rounded-2xl bg-white/70 items-center justify-center">
+                <svg viewBox="0 0 24 24" class="w-7 h-7 text-ink" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2.5"/><path d="M5 21c1-4 4-6 7-6s6 2 7 6M9 10l-2 4M15 10l2 4"/></svg>
+              </div>
+              <div>
+                <h3 class="font-display text-3xl text-ink">פילאטיס אמהות</h3>
+                <p class="mt-1.5 text-ink-soft max-w-xl">זמן איכות גם לאמא — חיזוק הגוף ברגעי שקט, בידיעה שהילד שמח וקרוב.</p>
+              </div>
+            </div>
+            <a href="#schedule" class="inline-flex items-center gap-2 rounded-full bg-white/80 px-5 py-2.5 text-sm font-medium text-ink hover:bg-white transition-colors cursor-pointer whitespace-nowrap">
+              לוח השיעורים
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GAN ============ -->
+  <section id="gan" class="py-28 bg-cream relative overflow-hidden">
+    <div aria-hidden="true" class="absolute -top-20 right-1/4 w-72 h-72 bg-mint-100 blob-mask-1 blur-3xl"></div>
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-12 items-center relative">
+      <div class="lg:col-span-6 order-2 lg:order-1 reveal">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="rounded-4xl overflow-hidden h-72 ring-1 ring-white shadow-soft">
+            <img alt="ילדים בגן" loading="lazy" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1587616211892-f743fcca64f9?w=600&q=80&auto=format&fit=crop"/>
+          </div>
+          <div class="rounded-4xl overflow-hidden h-72 ring-1 ring-white shadow-soft mt-10">
+            <img alt="פעילות יצירה" loading="lazy" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80&auto=format&fit=crop"/>
+          </div>
+          <div class="rounded-4xl overflow-hidden h-56 ring-1 ring-white shadow-soft">
+            <img alt="מורות עם ילדים" loading="lazy" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1576037728058-fe4748d14fb0?w=600&q=80&auto=format&fit=crop"/>
+          </div>
+          <div class="rounded-4xl overflow-hidden h-56 ring-1 ring-white shadow-soft">
+            <img alt="פינת קריאה" loading="lazy" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1544776527-68e63addedf7?w=600&q=80&auto=format&fit=crop"/>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-6 order-1 lg:order-2 reveal">
+        <div class="accent-line"></div>
+        <p class="mt-5 text-sm tracking-widest text-gold-deep uppercase">גני הילדים</p>
+        <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mt-3 leading-[1.05]">
+          גן ילדים<br/>
+          <span class="text-ink-soft">כחלק מחוויית חיים.</span>
+        </h2>
+        <p class="mt-7 text-ink-soft text-lg leading-relaxed">
+          גני <em class="not-italic font-medium text-ink">דו רה מי</em> פועלים מתוך תפיסה הוליסטית:
+          הילד לא מגיע רק למסגרת — הוא גדל בתוך מעטפת שלמה של התפתחות, ביטחון, חוויות וקהילה.
+        </p>
+        <p class="mt-4 text-ink-soft text-lg leading-relaxed">
+          החיבור למתחם מאפשר להורים לקבל הרבה מעבר לגן רגיל:
+          פעילויות, חוגים, מרחבי משחק, חדר מלח, קהילה ותוכן מקצועי — במקום אחד.
+        </p>
+
+        <div class="mt-8 glass rounded-3xl p-5">
+          <div class="flex items-start gap-3">
+            <span class="w-9 h-9 rounded-xl bg-gold-light/40 flex items-center justify-center shrink-0">
+              <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold-deep" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <p class="text-ink-soft">
+              <span class="text-ink font-medium">״הגן לא נגמר ב־16:30 — </span>
+              הוא ממשיך לחוויית חיים שלמה.״
+            </p>
+          </div>
+        </div>
+
+        <a href="#contact" class="mt-8 inline-flex items-center gap-2 rounded-full bg-ink text-cream px-7 py-3.5 font-medium shadow-soft hover:bg-ink-soft transition-colors cursor-pointer">
+          הצטרפו לקהילה
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY DIFFERENT ============ -->
+  <section id="why" class="py-28 bg-aurora-soft">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="max-w-3xl reveal">
+        <div class="accent-line"></div>
+        <p class="mt-5 text-sm tracking-widest text-gold-deep uppercase">למה זה שונה</p>
+        <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mt-3 leading-[1.08]">
+          מקום שגם ההורה<br/>
+          <span class="text-ink-soft">נהנה להיות בו.</span>
+        </h2>
+      </div>
+
+      <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- 8 cards -->
+        <div class="glass rounded-3xl p-7 lift cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-mint-200 flex items-center justify-center mb-5">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21V12h6v9"/></svg>
+          </div>
+          <h3 class="font-display text-xl text-ink">מעטפת מלאה</h3>
+          <p class="mt-2 text-sm text-ink-soft leading-relaxed">להורה ולילד גם יחד — שגרה אחת שמתחברת בלי תפרים.</p>
+        </div>
+        <div class="glass rounded-3xl p-7 lift cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-sand-200 flex items-center justify-center mb-5">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2M19 21v-1.5a3 3 0 00-3-3"/></svg>
+          </div>
+          <h3 class="font-display text-xl text-ink">שילוב מושלם</h3>
+          <p class="mt-2 text-sm text-ink-soft leading-relaxed">גן, קהילה וחוויות — תחת קורת גג אחת ובאותה רוח.</p>
+        </div>
+        <div class="glass rounded-3xl p-7 lift cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-sky-200 flex items-center justify-center mb-5">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21l1.2-6.9-5-4.9 6.9-1L12 2z"/></svg>
+          </div>
+          <h3 class="font-display text-xl text-ink">עיצוב ברמה גבוהה</h3>
+          <p class="mt-2 text-sm text-ink-soft leading-relaxed">מרחב יוקרתי ומתוכנן עד הפרט האחרון.</p>
+        </div>
+        <div class="glass rounded-3xl p-7 lift cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-gold-light/40 flex items-center justify-center mb-5">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <h3 class="font-display text-xl text-ink">פעילויות לאורך כל היום</h3>
+          <p class="mt-2 text-sm text-ink-soft leading-relaxed">מהבוקר ועד אחר הצהריים, יש לאן להגיע ועם מי.</p>
+        </div>
+        <div class="glass rounded-3xl p-7 lift cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-mint-200 flex items-center justify-center mb-5">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/></svg>
+          </div>
+          <h3 class="font-display text-xl text-ink">איכותי ובטוח</h3>
+          <p class="mt-2 text-sm text-ink-soft leading-relaxed">סטנדרטים גבוהים, סביבה מוגנת ושקטה.</p>
+        </div>
+        <div class="glass rounded-3xl p-7 lift cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-sand-200 flex items-center justify-center mb-5">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M5 12H2M22 12h-3M12 22v-3M4.2 4.2l2.2 2.2M19.8 19.8l-2.2-2.2M19.8 4.2l-2.2 2.2M4.2 19.8l2.2-2.2"/></svg>
+          </div>
+          <h3 class="font-display text-xl text-ink">צוות מקצועי וחם</h3>
+          <p class="mt-2 text-sm text-ink-soft leading-relaxed">אנשים שעושים את זה מאהבה, עם ניסיון רב־שנים.</p>
+        </div>
+        <div class="glass rounded-3xl p-7 lift cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-sky-200 flex items-center justify-center mb-5">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10z"/></svg>
+          </div>
+          <h3 class="font-display text-xl text-ink">חוויית Premium Family</h3>
+          <p class="mt-2 text-sm text-ink-soft leading-relaxed">סטנדרט של בית מלון בוטיק — לכל המשפחה.</p>
+        </div>
+        <div class="glass rounded-3xl p-7 lift cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-gold-light/40 flex items-center justify-center mb-5">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12c2-4 6-6 8-6s6 2 8 6c-2 4-6 6-8 6s-6-2-8-6z"/><circle cx="12" cy="12" r="2.4"/></svg>
+          </div>
+          <h3 class="font-display text-xl text-ink">מקום שטוב לשהות בו</h3>
+          <p class="mt-2 text-sm text-ink-soft leading-relaxed">אווירה רגועה שגורמת לרצות להישאר עוד קצת.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VISION ============ -->
+  <section class="py-28 bg-ink text-cream relative overflow-hidden">
+    <div aria-hidden="true" class="absolute -top-32 -right-24 w-96 h-96 bg-gold-soft/15 blob-mask-2 blur-3xl"></div>
+    <div aria-hidden="true" class="absolute -bottom-40 -left-24 w-96 h-96 bg-mint-300/10 blob-mask-1 blur-3xl"></div>
+
+    <div class="max-w-5xl mx-auto px-5 sm:px-8 text-center relative reveal">
+      <div class="accent-line mx-auto"></div>
+      <p class="mt-5 text-sm tracking-widest text-gold-light uppercase">חזון</p>
+      <h2 class="font-display font-light text-4xl sm:text-5xl lg:text-6xl mt-4 leading-[1.1]">
+        לבנות את המקום<br/>
+        <span class="font-medium">שהיינו רוצים</span> עבור<br/>
+        המשפחה שלנו.
+      </h2>
+      <p class="mt-10 text-cream/75 text-lg leading-relaxed max-w-3xl mx-auto">
+        החזון של המתחם הוא ליצור דור חדש של מרחבים להורים וילדים בישראל —
+        מקומות שמחברים בין התפתחות, רוגע, קהילה וחוויית חיים.
+      </p>
+      <p class="mt-5 text-cream/75 text-lg leading-relaxed max-w-2xl mx-auto">
+        אנחנו מאמינים שהורה רגוע ובטוח יוצר ילד רגוע ובטוח.<br/>
+        ולכן יצרנו מקום שחושב גם על הילד — וגם על ההורה.
+      </p>
+
+      <div class="mt-12 inline-flex items-center gap-3 glass rounded-full px-6 py-3 text-cream">
+        <svg viewBox="0 0 24 24" class="w-4 h-4 text-gold-light" fill="currentColor"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21l1.2-6.9-5-4.9 6.9-1L12 2z"/></svg>
+        <span class="text-sm">מקום חדש להורים וילדים בגיל הרך</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCHEDULE ============ -->
+  <section id="schedule" class="py-28 bg-cream">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="flex items-end justify-between flex-wrap gap-6 reveal">
+        <div>
+          <div class="accent-line"></div>
+          <p class="mt-5 text-sm tracking-widest text-gold-deep uppercase">מערכת שעות</p>
+          <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mt-3 leading-tight">
+            יש פה משהו<br/>
+            <span class="text-ink-soft">לכל שעה ביום.</span>
+          </h2>
+        </div>
+        <p class="max-w-md text-ink-soft leading-relaxed">
+          לוח שמתעדכן שבועית, עם פעילויות בוקר, חוגים ופנאי משפחתי.
+          ניתן להירשם דרך אזור החברים.
+        </p>
+      </div>
+
+      <!-- schedule grid -->
+      <div class="mt-12 glass-strong rounded-4xl p-3 sm:p-5 overflow-hidden">
+        <div class="grid grid-cols-7 text-center text-xs sm:text-sm font-medium text-ink-muted">
+          <div class="p-3">ראשון</div>
+          <div class="p-3">שני</div>
+          <div class="p-3">שלישי</div>
+          <div class="p-3">רביעי</div>
+          <div class="p-3">חמישי</div>
+          <div class="p-3">שישי</div>
+          <div class="p-3">שבת</div>
+        </div>
+        <div class="grid grid-cols-7 gap-1.5 text-[11px] sm:text-xs">
+          <!-- morning -->
+          <div class="bg-mint-100 text-ink rounded-2xl p-3 min-h-[80px]"><p class="font-medium">08:30</p><p class="text-ink-soft">גן עם אמא</p></div>
+          <div class="bg-sand-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">09:00</p><p class="text-ink-soft">מוזיקה</p></div>
+          <div class="bg-sky-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">09:00</p><p class="text-ink-soft">Open Play</p></div>
+          <div class="bg-mint-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">09:30</p><p class="text-ink-soft">יוגה אמהות</p></div>
+          <div class="bg-sand-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">09:00</p><p class="text-ink-soft">תנועה</p></div>
+          <div class="bg-sky-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">09:30</p><p class="text-ink-soft">משפחתי</p></div>
+          <div class="bg-cream-deep rounded-2xl p-3 min-h-[80px]"><p class="font-medium">10:00</p><p class="text-ink-soft">בראנץ׳ קהילה</p></div>
+
+          <!-- noon -->
+          <div class="bg-sky-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">11:00</p><p class="text-ink-soft">Salt Room</p></div>
+          <div class="bg-mint-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">11:30</p><p class="text-ink-soft">פילאטיס</p></div>
+          <div class="bg-sand-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">11:00</p><p class="text-ink-soft">אנגלית קטנים</p></div>
+          <div class="bg-sky-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">12:00</p><p class="text-ink-soft">Salt Room</p></div>
+          <div class="bg-mint-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">11:00</p><p class="text-ink-soft">פילאטיס</p></div>
+          <div class="bg-cream-deep rounded-2xl p-3 min-h-[80px]"><p class="font-medium">11:00</p><p class="text-ink-soft">פתוח להורים</p></div>
+          <div class="bg-cream-deep rounded-2xl p-3 min-h-[80px]"><p class="font-medium">11:30</p><p class="text-ink-soft">סיפור ושיר</p></div>
+
+          <!-- afternoon -->
+          <div class="bg-sand-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">16:00</p><p class="text-ink-soft">יצירה</p></div>
+          <div class="bg-sky-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">16:30</p><p class="text-ink-soft">Open Play</p></div>
+          <div class="bg-mint-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">16:00</p><p class="text-ink-soft">חוג תנועה</p></div>
+          <div class="bg-sand-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">17:00</p><p class="text-ink-soft">סדנת הורים</p></div>
+          <div class="bg-sky-100 rounded-2xl p-3 min-h-[80px]"><p class="font-medium">16:30</p><p class="text-ink-soft">Open Play</p></div>
+          <div class="bg-cream-deep rounded-2xl p-3 min-h-[80px]"><p class="font-medium">—</p><p class="text-ink-soft">מנוחה</p></div>
+          <div class="bg-cream-deep rounded-2xl p-3 min-h-[80px]"><p class="font-medium">17:00</p><p class="text-ink-soft">אירוע קהילה</p></div>
+        </div>
+
+        <!-- legend -->
+        <div class="mt-5 px-3 pb-2 flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-soft">
+          <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-mint-200"></span>הורה־ילד</span>
+          <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sand-200"></span>חוגי העשרה</span>
+          <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sky-200"></span>Open Play / Salt</span>
+          <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-cream-deep"></span>קהילה ומיוחדים</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="voices" class="py-28 bg-aurora-soft">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="text-center reveal">
+        <div class="accent-line mx-auto"></div>
+        <p class="mt-5 text-sm tracking-widest text-gold-deep uppercase">קולות מהמתחם</p>
+        <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl text-ink mt-3 leading-tight">
+          הורים מספרים
+        </h2>
+      </div>
+
+      <div class="mt-14 grid md:grid-cols-3 gap-5">
+        <article class="glass-strong rounded-3xl p-7 lift">
+          <svg class="w-7 h-7 text-gold-soft mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M7.17 6A5.17 5.17 0 002 11.17v6.66h6.66v-6.66H5.34a1.83 1.83 0 011.83-1.83V6zm10 0a5.17 5.17 0 00-5.17 5.17v6.66h6.66v-6.66h-3.32a1.83 1.83 0 011.83-1.83V6z"/></svg>
+          <p class="text-ink text-lg leading-relaxed">״הרגשנו מהרגע הראשון שמצאנו משפחה. הילד שלנו פורח והגן הפך לבית.״</p>
+          <div class="mt-5 pt-5 border-t border-ink/10 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-mint-200"></div>
+            <div>
+              <p class="text-sm font-medium text-ink">דנה ואייל</p>
+              <p class="text-xs text-ink-muted">הורים לתום, גיל 2</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="glass-strong rounded-3xl p-7 lift">
+          <svg class="w-7 h-7 text-gold-soft mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M7.17 6A5.17 5.17 0 002 11.17v6.66h6.66v-6.66H5.34a1.83 1.83 0 011.83-1.83V6zm10 0a5.17 5.17 0 00-5.17 5.17v6.66h6.66v-6.66h-3.32a1.83 1.83 0 011.83-1.83V6z"/></svg>
+          <p class="text-ink text-lg leading-relaxed">״אני באה למתחם גם בשבילי. סוף סוף מקום שגם אמא יכולה לנשום בו לרגע.״</p>
+          <div class="mt-5 pt-5 border-t border-ink/10 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-sand-200"></div>
+            <div>
+              <p class="text-sm font-medium text-ink">נועה</p>
+              <p class="text-xs text-ink-muted">אמא לליה, גיל 1.5</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="glass-strong rounded-3xl p-7 lift">
+          <svg class="w-7 h-7 text-gold-soft mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M7.17 6A5.17 5.17 0 002 11.17v6.66h6.66v-6.66H5.34a1.83 1.83 0 011.83-1.83V6zm10 0a5.17 5.17 0 00-5.17 5.17v6.66h6.66v-6.66h-3.32a1.83 1.83 0 011.83-1.83V6z"/></svg>
+          <p class="text-ink text-lg leading-relaxed">״האסתטיקה, האנשים, התחושה — הכל יוצא דופן. זה הרבה מעבר לגן.״</p>
+          <div class="mt-5 pt-5 border-t border-ink/10 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-sky-200"></div>
+            <div>
+              <p class="text-sm font-medium text-ink">משפחת לוי</p>
+              <p class="text-xs text-ink-muted">הורים לאוריה, גיל 3</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA / CONTACT ============ -->
+  <section id="contact" class="py-28 bg-cream">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="relative rounded-5xl overflow-hidden bg-gradient-to-br from-mint-100 via-cream to-sky-100 p-8 sm:p-14 shadow-soft ring-1 ring-white/60">
+        <div aria-hidden="true" class="absolute -top-16 -right-16 w-72 h-72 bg-gold-light/30 blob-mask-1 blur-3xl"></div>
+        <div aria-hidden="true" class="absolute -bottom-20 -left-10 w-72 h-72 bg-mint-200/60 blob-mask-2 blur-3xl"></div>
+
+        <div class="relative grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div class="accent-line"></div>
+            <p class="mt-5 text-sm tracking-widest text-gold-deep uppercase">הצעד הראשון</p>
+            <h2 class="font-display text-4xl sm:text-5xl text-ink mt-3 leading-[1.08]">
+              בואו להכיר<br/>
+              <span class="text-ink-soft">את המתחם.</span>
+            </h2>
+            <p class="mt-6 text-ink-soft text-lg leading-relaxed max-w-md">
+              השאירו פרטים ונחזור אליכם עם כל המידע על הפעילויות, החוגים והקהילה של המתחם.
+            </p>
+
+            <div class="mt-8 space-y-3 text-sm text-ink-soft">
+              <div class="flex items-center gap-3">
+                <span class="w-9 h-9 rounded-xl bg-white/80 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16.5v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 011.12 4a2 2 0 012-2.18h3A2 2 0 018.13 4a13 13 0 00.7 2.81 2 2 0 01-.45 2L7 10a16 16 0 006 6l1.2-1.36a2 2 0 012-.45 13 13 0 002.81.7A2 2 0 0121 16.5z"/></svg>
+                </span>
+                <span>צוות שירות זמין כל יום · 09:00–18:00</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="w-9 h-9 rounded-xl bg-white/80 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span>המתחם בבית אל על · בית אל על</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="w-9 h-9 rounded-xl bg-white/80 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <span>ימי היכרות בכל יום ראשון</span>
+              </div>
+            </div>
+          </div>
+
+          <form class="glass-strong rounded-4xl p-7 sm:p-8" onsubmit="event.preventDefault(); document.getElementById('formSuccess').classList.remove('hidden'); this.reset();">
+            <div class="space-y-4">
+              <div>
+                <label for="name" class="block text-sm text-ink-soft mb-1.5">שם מלא</label>
+                <input id="name" name="name" required type="text" class="w-full rounded-2xl bg-white/80 border border-white px-4 py-3 text-ink placeholder:text-ink-muted focus:bg-white transition-colors" placeholder="ישראלה ישראלי"/>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="phone" class="block text-sm text-ink-soft mb-1.5">טלפון</label>
+                  <input id="phone" name="phone" required type="tel" inputmode="tel" class="w-full rounded-2xl bg-white/80 border border-white px-4 py-3 text-ink placeholder:text-ink-muted focus:bg-white transition-colors" placeholder="050-0000000"/>
+                </div>
+                <div>
+                  <label for="age" class="block text-sm text-ink-soft mb-1.5">גיל הילד/ה</label>
+                  <select id="age" name="age" class="w-full rounded-2xl bg-white/80 border border-white px-4 py-3 text-ink focus:bg-white transition-colors">
+                    <option>0–1</option>
+                    <option>1–2</option>
+                    <option>2–3</option>
+                    <option>3–4</option>
+                    <option>4–5</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label for="interest" class="block text-sm text-ink-soft mb-1.5">מה הכי מעניין אתכם?</label>
+                <select id="interest" name="interest" class="w-full rounded-2xl bg-white/80 border border-white px-4 py-3 text-ink focus:bg-white transition-colors">
+                  <option>גן ילדים</option>
+                  <option>Open Play & Parents Lounge</option>
+                  <option>חוגים</option>
+                  <option>Salt Room</option>
+                  <option>הכל גם יחד</option>
+                </select>
+              </div>
+              <div>
+                <label for="msg" class="block text-sm text-ink-soft mb-1.5">משהו שחשוב לדעת? (לא חובה)</label>
+                <textarea id="msg" name="msg" rows="3" class="w-full rounded-2xl bg-white/80 border border-white px-4 py-3 text-ink placeholder:text-ink-muted focus:bg-white transition-colors" placeholder="נשמח לשמוע"></textarea>
+              </div>
+
+              <button type="submit" class="w-full inline-flex justify-center items-center gap-2 rounded-2xl bg-ink text-cream px-6 py-4 font-medium shadow-glow hover:bg-ink-soft transition-colors cursor-pointer">
+                שלחו פרטים
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+              </button>
+
+              <p class="text-xs text-ink-muted text-center">אנחנו שומרים על הפרטים שלכם. נחזור תוך 24 שעות.</p>
+
+              <div id="formSuccess" class="hidden rounded-2xl bg-mint-100 text-ink p-4 text-sm text-center">
+                תודה! קיבלנו את הפרטים — נחזור אליכם בקרוב 💌
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-ink text-cream/70 pt-20 pb-10 relative overflow-hidden">
+    <div aria-hidden="true" class="absolute -top-24 left-1/4 w-80 h-80 bg-mint-300/10 blob-mask-3 blur-3xl"></div>
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 relative">
+      <div class="grid lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-5">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex w-10 h-10 rounded-full bg-cream/10 items-center justify-center">
+              <svg viewBox="0 0 24 24" class="w-5 h-5 text-cream" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.7L12 16.2 6.8 19l1-5.7L3.6 9.1l5.8-.8L12 3z"/></svg>
+            </span>
+            <div>
+              <p class="font-display text-2xl text-cream">המתחם בבית אל על</p>
+              <p class="text-xs tracking-widest uppercase text-cream/50">מבית דו רה מי</p>
+            </div>
+          </div>
+          <p class="mt-6 leading-relaxed max-w-md">
+            מרחב חווייתי להורה ולילד בגיל הרך —
+            גני ילדים, Open Play, Parents Lounge, Salt Room וחוגים.
+            מהבוקר ועד אחר הצהריים.
+          </p>
+        </div>
+
+        <div class="lg:col-span-3">
+          <p class="text-cream text-sm font-medium mb-4">המרחבים</p>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#spaces" class="hover:text-cream transition-colors">Open Play</a></li>
+            <li><a href="#spaces" class="hover:text-cream transition-colors">Parents Lounge</a></li>
+            <li><a href="#spaces" class="hover:text-cream transition-colors">Salt Room</a></li>
+            <li><a href="#spaces" class="hover:text-cream transition-colors">חוגי העשרה</a></li>
+            <li><a href="#gan" class="hover:text-cream transition-colors">גני הילדים</a></li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-4">
+          <p class="text-cream text-sm font-medium mb-4">צרו קשר</p>
+          <ul class="space-y-2 text-sm">
+            <li>המתחם בבית אל על · בית אל על</li>
+            <li>פתוחים יום־יום · 08:00–19:00</li>
+            <li><a href="#contact" class="hover:text-cream transition-colors">השארת פרטים</a></li>
+            <li><a href="#" class="hover:text-cream transition-colors">WhatsApp</a></li>
+          </ul>
+          <div class="flex items-center gap-3 mt-6">
+            <a href="#" class="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center hover:bg-cream/20 transition-colors cursor-pointer" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center hover:bg-cream/20 transition-colors cursor-pointer" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 01-13.1 8.1L3 21l1-4.9A9 9 0 1121 12z"/><path d="M8.5 9.5c.3 2 2 3.7 4 4l1-1.3 2.3 1c-.4 1.4-1.9 2-3.3 1.7C10 14.4 8 12.4 7.5 10.4c-.3-1.4.3-2.9 1.7-3.3l1 2.3-1.7 1z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-14 pt-8 border-t border-cream/10 flex flex-wrap items-center justify-between gap-4 text-xs text-cream/50">
+        <p>© <span id="year"></span> דו רה מי · המתחם בבית אל על. כל הזכויות שמורות.</p>
+        <p>נבנה באהבה למשפחות בגיל הרך</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu
+    document.getElementById('navToggle')?.addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    });
+    document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.add('hidden');
+    }));
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Reveal on scroll
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Stat counters
+    const counterIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseInt(el.dataset.count, 10);
+        const duration = 1400; const start = performance.now();
+        const step = (now) => {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(target * eased).toLocaleString('he-IL');
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        counterIO.unobserve(el);
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('[data-count]').forEach(el => counterIO.observe(el));
+  </script>
+
+</body>
+</html>
