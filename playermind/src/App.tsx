@@ -26,16 +26,38 @@ import KnowledgeArticle from "./pages/KnowledgeArticle";
 import Settings from "./pages/Settings";
 import SetupRequired from "./pages/SetupRequired";
 
+import Landing from "./pages/marketing/Landing";
+import Pricing from "./pages/marketing/Pricing";
+import Waitlist from "./pages/marketing/Waitlist";
+import Admin from "./pages/dashboards/Admin";
+import Analytics from "./pages/dashboards/Analytics";
+import Coach from "./pages/dashboards/Coach";
+
 function Protected({ children }: { children: React.ReactNode }) {
   const { user, profile, loading } = useAuth();
   const location = useLocation();
   if (loading) return <FullScreenLoader />;
   if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
-  // אם המשתמש לא סיים onboarding – הפנה לאשף
   if (profile && !profile.onboarded && location.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
   }
   return <AppLayout>{children}</AppLayout>;
+}
+
+function RoleProtected({ roles, children }: { roles: string[]; children: React.ReactNode }) {
+  const { user, profile, loading } = useAuth();
+  if (loading) return <FullScreenLoader />;
+  if (!user) return <Navigate to="/login" replace />;
+  if (!profile || !roles.includes(profile.role)) return <Navigate to="/" replace />;
+  return <AppLayout>{children}</AppLayout>;
+}
+
+// שורש: ממתין לטעינה; משתמש מחובר → דאשבורד, אחרת → דף נחיתה ציבורי
+function Root() {
+  const { user, loading } = useAuth();
+  if (loading) return <FullScreenLoader />;
+  if (!user) return <Navigate to="/welcome" replace />;
+  return <Protected><Dashboard /></Protected>;
 }
 
 export default function App() {
@@ -43,12 +65,19 @@ export default function App() {
 
   return (
     <Routes>
+      {/* ציבורי – שיווק */}
+      <Route path="/welcome" element={<Landing />} />
+      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/waitlist" element={<Waitlist />} />
+
+      {/* אימות */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/reset" element={<ResetPassword />} />
       <Route path="/onboarding" element={<OnboardingGate />} />
 
-      <Route path="/" element={<Protected><Dashboard /></Protected>} />
+      {/* אפליקציה */}
+      <Route path="/" element={<Root />} />
       <Route path="/profile" element={<Protected><Profile /></Protected>} />
       <Route path="/checkin/morning" element={<Protected><MorningCheckin /></Protected>} />
       <Route path="/training/pre" element={<Protected><PreTraining /></Protected>} />
@@ -64,6 +93,11 @@ export default function App() {
       <Route path="/knowledge" element={<Protected><Knowledge /></Protected>} />
       <Route path="/knowledge/:slug" element={<Protected><KnowledgeArticle /></Protected>} />
       <Route path="/settings" element={<Protected><Settings /></Protected>} />
+
+      {/* לוחות לפי תפקיד */}
+      <Route path="/admin" element={<RoleProtected roles={["admin"]}><Admin /></RoleProtected>} />
+      <Route path="/analytics" element={<RoleProtected roles={["admin"]}><Analytics /></RoleProtected>} />
+      <Route path="/coach" element={<RoleProtected roles={["coach", "admin"]}><Coach /></RoleProtected>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

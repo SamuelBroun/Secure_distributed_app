@@ -4,6 +4,7 @@ import {
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import type { PlayerProfile } from "../lib/types";
+import { setTrackingUser } from "../lib/tracking";
 
 interface AuthCtx {
   user: User | null;
@@ -45,6 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!active) return;
       setSession(data.session);
       setUser(data.session?.user ?? null);
+      setTrackingUser(data.session?.user?.id ?? null);
       if (data.session?.user) {
         loadProfile(data.session.user.id).finally(() => setLoading(false));
       } else {
@@ -55,6 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, sess) => {
       setSession(sess);
       setUser(sess?.user ?? null);
+      setTrackingUser(sess?.user?.id ?? null);
       if (sess?.user) void loadProfile(sess.user.id);
       else setProfile(null);
     });

@@ -18,6 +18,7 @@ export interface PlayerProfile {
   physical_goals: string | null;
   mental_goals: string | null;
   team_goals: string | null;
+  role: "player" | "coach" | "admin";
   onboarded: boolean;
   updated_at: string;
 }

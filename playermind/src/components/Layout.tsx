@@ -1,12 +1,20 @@
-import { Link, useNavigate } from "react-router-dom";
-import type { ReactNode } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, type ReactNode } from "react";
 import { Wordmark } from "./Logo";
 import { BottomNav } from "./BottomNav";
+import { FeedbackWidget } from "./FeedbackWidget";
 import { useTheme } from "../context/ThemeContext";
+import { trackPageView } from "../lib/tracking";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const { theme, toggle } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname]);
+
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col" style={{ background: "var(--bg)" }}>
       <header className="safe-top sticky top-0 z-20 px-4 pb-2 pt-3"
@@ -28,6 +36,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
       <main className="flex-1 px-4 pb-28">{children}</main>
 
+      <FeedbackWidget />
       <BottomNav />
     </div>
   );

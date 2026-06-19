@@ -95,6 +95,20 @@ export default function Settings() {
         <LinkRow label="מרכז ידע" onClick={() => navigate("/knowledge")} />
       </SettingGroup>
 
+      {(profile?.role === "coach" || profile?.role === "admin") && (
+        <SettingGroup title="ניהול">
+          {(profile?.role === "coach" || profile?.role === "admin") && (
+            <LinkRow label="🧭 לוח מאמן" onClick={() => navigate("/coach")} />
+          )}
+          {profile?.role === "admin" && (
+            <>
+              <LinkRow label="🛠️ לוח ניהול" onClick={() => navigate("/admin")} />
+              <LinkRow label="📊 אנליטיקות" onClick={() => navigate("/analytics")} />
+            </>
+          )}
+        </SettingGroup>
+      )}
+
       <button onClick={logout} className="btn w-full mt-2"
               style={{ background: "var(--surface-2)", color: "#b91c1c" }}>
         התנתקות

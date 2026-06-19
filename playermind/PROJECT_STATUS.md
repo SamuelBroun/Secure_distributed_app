@@ -1,7 +1,22 @@
 # PROJECT STATUS — PLAYERMIND
 
 > מסמך מצב חי. מתעדכן ככל שהפיתוח מתקדם.
-> **עודכן לאחרונה:** 2026-06-19
+> **עודכן לאחרונה:** 2026-06-19 · **שלב: הכנה לבטא**
+
+## 🚀 תוספות השקה (Beta launch)
+- [x] **דף נחיתה** (`/welcome`) — hero, עמודי תוכן, "איך זה עובד", באנר עיקרון, CTA.
+- [x] **דף תמחור** (`/pricing`) — בטא חינם / Pro / Team.
+- [x] **דף רשימת המתנה** (`/waitlist`) — פתוח גם ללא התחברות (טבלת `waitlist`).
+- [x] **לוח ניהול (Admin)** (`/admin`) — מדדים, ניהול תפקידי משתמשים, משוב, תקלות, רשימת המתנה.
+- [x] **לוח מאמן (Coach)** (`/coach`) — שחקנים מקושרים + מצב יומי + תובנה אישית.
+- [x] **לוח אנליטיקות** (`/analytics`) — משתמשים פעילים, אירועים מובילים, גרפי שימוש וצ׳ק-אינים.
+- [x] **איסוף משוב** — כפתור צף + מודאל (סוג/דירוג/טקסט) → טבלת `feedback`.
+- [x] **מעקב שגיאות** — ErrorBoundary + מאזיני window/promise → טבלת `error_logs`.
+- [x] **מעקב שימוש** — page views ואירועים → טבלת `usage_events`.
+- [x] **תפקידים + RLS** — `player/coach/admin`, `coach_players`, פונקציות `is_admin()` / `is_coach_of()`,
+      מיגרציה `supabase/migrations/0002_launch.sql` (משולב גם ב-schema.sql).
+
+
 
 סטאק: **React 18 + TypeScript + Vite + Supabase + Tailwind CSS**.
 האפליקציה עוברת `tsc` במצב strict ו-`vite build` בהצלחה.
