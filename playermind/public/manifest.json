@@ -1,0 +1,16 @@
+{
+  "name": "PLAYERMIND",
+  "short_name": "PLAYERMIND",
+  "description": "מערכת ההפעלה האישית של שחקן הכדורגל",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#163A5F",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
