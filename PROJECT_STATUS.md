@@ -141,7 +141,7 @@ npm run dev               # http://localhost:5173
 
 ## ☁️ פריסה ל-Vercel (תקציר)
 
-1. Import הריפו ל-Vercel (Root: `playermind`, Framework: Vite).
+1. Import הריפו ל-Vercel (Root: `./` שורש הריפו, Framework: Vite).
 2. Env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
 3. Deploy (rewrites ל-SPA כבר ב-`vercel.json`).
 

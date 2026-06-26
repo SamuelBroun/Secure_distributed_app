@@ -58,7 +58,7 @@ npm run dev
 ## ☁️ פריסה ל-Vercel
 
 1. דחוף את הקוד ל-GitHub.
-2. ב-Vercel: **New Project → Import** את הריפו (Root Directory: `playermind`).
+2. ב-Vercel: **New Project → Import** את הריפו (Root Directory: `./` – שורש הריפו).
 3. Framework: **Vite** (זוהה אוטומטית). Build: `npm run build`, Output: `dist`.
 4. הוסף Environment Variables: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
 5. Deploy. הקובץ `vercel.json` כבר מגדיר rewrite ל-SPA.
@@ -68,7 +68,7 @@ npm run dev
 ## 📁 מבנה הפרויקט
 
 ```
-playermind/
+.   (שורש הריפו – אפליקציית ה-Vite)
 ├── index.html
 ├── package.json · tsconfig.json · vite.config.ts
 ├── tailwind.config.js · postcss.config.js
