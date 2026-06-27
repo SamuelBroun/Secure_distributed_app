@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { supabase } from "../../lib/supabase";
 import { todayStr } from "../../lib/db";
+import { persist, SAVE_SUCCESS, SAVE_ERROR } from "../../lib/save";
 import { PageHeader } from "../../components/Layout";
 import { Field, ChipGroup, YesNo, TextArea, SaveBar } from "../../components/Form";
 
@@ -24,15 +25,18 @@ export default function PreTraining() {
     e.preventDefault();
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase.from("training_sessions").insert({
-      user_id: user.id, log_date: todayStr(), phase: "pre",
-      arrival_state: arrival, focus_today: focus,
-      ate: ate === "כן", drank: drank === "כן",
-      pro_goal: proGoal || null, mental_goal: mentalGoal || null,
+    const { ok } = await persist(user.id, "training_pre", async () => {
+      const r = await supabase.from("training_sessions").insert({
+        user_id: user.id, log_date: todayStr(), phase: "pre",
+        arrival_state: arrival, focus_today: focus,
+        ate: ate === "כן", drank: drank === "כן",
+        pro_goal: proGoal || null, mental_goal: mentalGoal || null,
+      });
+      return { error: r.error };
     });
     setSaving(false);
-    if (error) return toast("שמירה נכשלה, נסה שוב.", "error");
-    toast("ההכנה לאימון נשמרה. בהצלחה!", "success");
+    if (!ok) return toast(SAVE_ERROR, "error");
+    toast(SAVE_SUCCESS, "success");
     navigate("/");
   }
 

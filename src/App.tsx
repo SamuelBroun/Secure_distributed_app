@@ -1,37 +1,42 @@
+import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import { isSupabaseConfigured } from "./lib/supabase";
 import { AppLayout } from "./components/Layout";
 import { FullScreenLoader } from "./components/Loading";
 
+// טעינה מיידית – מסכי כניסה ושימוש יומיומי
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
-import MorningCheckin from "./pages/checkins/MorningCheckin";
-import PreTraining from "./pages/checkins/PreTraining";
-import PostTraining from "./pages/checkins/PostTraining";
-import PreMatch from "./pages/checkins/PreMatch";
-import PostMatch from "./pages/checkins/PostMatch";
-import Recovery from "./pages/checkins/Recovery";
-import LifeBalance from "./pages/checkins/LifeBalance";
-import SuccessJournal from "./pages/checkins/SuccessJournal";
-import Insights from "./pages/Insights";
-import Reports from "./pages/Reports";
-import Memory from "./pages/Memory";
-import Knowledge from "./pages/Knowledge";
-import KnowledgeArticle from "./pages/KnowledgeArticle";
-import Settings from "./pages/Settings";
 import SetupRequired from "./pages/SetupRequired";
 
-import Landing from "./pages/marketing/Landing";
-import Pricing from "./pages/marketing/Pricing";
-import Waitlist from "./pages/marketing/Waitlist";
-import Admin from "./pages/dashboards/Admin";
-import Analytics from "./pages/dashboards/Analytics";
-import Coach from "./pages/dashboards/Coach";
+// טעינה עצלה – שיפור ביצועים (כולל מסכים עם גרפים/תוכן כבד)
+const Profile = lazy(() => import("./pages/Profile"));
+const MorningCheckin = lazy(() => import("./pages/checkins/MorningCheckin"));
+const PreTraining = lazy(() => import("./pages/checkins/PreTraining"));
+const PostTraining = lazy(() => import("./pages/checkins/PostTraining"));
+const PreMatch = lazy(() => import("./pages/checkins/PreMatch"));
+const PostMatch = lazy(() => import("./pages/checkins/PostMatch"));
+const Recovery = lazy(() => import("./pages/checkins/Recovery"));
+const LifeBalance = lazy(() => import("./pages/checkins/LifeBalance"));
+const SuccessJournal = lazy(() => import("./pages/checkins/SuccessJournal"));
+const Insights = lazy(() => import("./pages/Insights"));
+const Reports = lazy(() => import("./pages/Reports"));
+const Memory = lazy(() => import("./pages/Memory"));
+const Goals = lazy(() => import("./pages/Goals"));
+const AICoach = lazy(() => import("./pages/AICoach"));
+const Knowledge = lazy(() => import("./pages/Knowledge"));
+const KnowledgeArticle = lazy(() => import("./pages/KnowledgeArticle"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Landing = lazy(() => import("./pages/marketing/Landing"));
+const Pricing = lazy(() => import("./pages/marketing/Pricing"));
+const Waitlist = lazy(() => import("./pages/marketing/Waitlist"));
+const Admin = lazy(() => import("./pages/dashboards/Admin"));
+const Analytics = lazy(() => import("./pages/dashboards/Analytics"));
+const Coach = lazy(() => import("./pages/dashboards/Coach"));
 
 function Protected({ children }: { children: React.ReactNode }) {
   const { user, profile, loading } = useAuth();
@@ -64,6 +69,7 @@ export default function App() {
   if (!isSupabaseConfigured) return <SetupRequired />;
 
   return (
+    <Suspense fallback={<FullScreenLoader />}>
     <Routes>
       {/* ציבורי – שיווק */}
       <Route path="/welcome" element={<Landing />} />
@@ -88,6 +94,8 @@ export default function App() {
       <Route path="/life" element={<Protected><LifeBalance /></Protected>} />
       <Route path="/journal" element={<Protected><SuccessJournal /></Protected>} />
       <Route path="/insights" element={<Protected><Insights /></Protected>} />
+      <Route path="/goals" element={<Protected><Goals /></Protected>} />
+      <Route path="/ai-coach" element={<Protected><AICoach /></Protected>} />
       <Route path="/reports" element={<Protected><Reports /></Protected>} />
       <Route path="/memory" element={<Protected><Memory /></Protected>} />
       <Route path="/knowledge" element={<Protected><Knowledge /></Protected>} />
@@ -101,6 +109,7 @@ export default function App() {
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </Suspense>
   );
 }
 

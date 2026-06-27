@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Star } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import type { Feedback, ErrorLog, WaitlistEntry } from "../../lib/launchTypes";
 import type { PlayerProfile } from "../../lib/types";
 import { PageHeader } from "../../components/Layout";
 import { Spinner } from "../../components/Loading";
+import { Icon } from "../../components/Icon";
 import { useToast } from "../../context/ToastContext";
 
 async function count(table: string, filter?: (q: any) => any): Promise<number> {
@@ -64,16 +66,16 @@ export default function Admin() {
       <PageHeader title="לוח ניהול" subtitle="ניהול משתמשים, משוב ותקלות." />
 
       <div className="grid grid-cols-3 gap-3">
-        <Tile label="שחקנים" value={stats.players} icon="⚽" />
-        <Tile label="מאמנים" value={stats.coaches} icon="🧭" />
-        <Tile label="צ׳ק-אין היום" value={stats.checkinsToday} icon="📅" />
-        <Tile label="רשימת המתנה" value={stats.waitlist} icon="📝" />
-        <Tile label="משוב" value={stats.feedback} icon="💬" />
-        <Tile label="תקלות" value={stats.errors} icon="🛠️" />
+        <Tile label="שחקנים" value={stats.players} icon="users" />
+        <Tile label="מאמנים" value={stats.coaches} icon="coach" />
+        <Tile label="צ׳ק-אין היום" value={stats.checkinsToday} icon="calendar" />
+        <Tile label="רשימת המתנה" value={stats.waitlist} icon="clipboard" />
+        <Tile label="משוב" value={stats.feedback} icon="feedback" />
+        <Tile label="תקלות" value={stats.errors} icon="warning" />
       </div>
 
       <div className="mt-3">
-        <Link to="/analytics" className="btn btn-primary w-full">לוח אנליטיקות מלא ›</Link>
+        <Link to="/analytics" className="btn btn-primary w-full">לוח אנליטיקות מלא</Link>
       </div>
 
       <Section title="ניהול משתמשים">
@@ -102,7 +104,13 @@ export default function Admin() {
               <div key={f.id} className="card">
                 <div className="mb-1 flex items-center gap-2">
                   <span className="pill" style={{ background: "var(--surface-2)" }}>{f.type || "כללי"}</span>
-                  {f.rating ? <span className="text-sm">{"⭐".repeat(f.rating)}</span> : null}
+                  {f.rating ? (
+                    <span className="flex gap-0.5">
+                      {Array.from({ length: f.rating }).map((_, i) => (
+                        <Star key={i} size={13} fill="#D9A441" color="#D9A441" />
+                      ))}
+                    </span>
+                  ) : null}
                   <span className="mr-auto text-xs muted">{new Date(f.created_at).toLocaleDateString("he-IL")}</span>
                 </div>
                 <p className="text-sm">{f.message}</p>
@@ -113,7 +121,7 @@ export default function Admin() {
       </Section>
 
       <Section title="תקלות אחרונות">
-        {errors.length === 0 ? <Empty text="אין תקלות מתועדות. 🎉" /> : (
+        {errors.length === 0 ? <Empty text="אין תקלות מתועדות." /> : (
           <div className="space-y-2">
             {errors.map((e) => (
               <div key={e.id} className="card">
@@ -151,7 +159,7 @@ export default function Admin() {
 function Tile({ label, value, icon }: { label: string; value: number; icon: string }) {
   return (
     <div className="card text-center">
-      <div className="text-xl">{icon}</div>
+      <div className="flex justify-center" style={{ color: "var(--brand)" }}><Icon name={icon} size={20} /></div>
       <div className="mt-1 font-display text-2xl font-extrabold" style={{ color: "var(--brand)" }}>{value}</div>
       <div className="text-xs muted">{label}</div>
     </div>

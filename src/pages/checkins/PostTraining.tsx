@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { supabase } from "../../lib/supabase";
 import { todayStr } from "../../lib/db";
+import { persist, SAVE_SUCCESS, SAVE_ERROR } from "../../lib/save";
 import { PageHeader } from "../../components/Layout";
 import { Field, ChipGroup, TextArea, SaveBar } from "../../components/Form";
 
@@ -25,15 +26,18 @@ export default function PostTraining() {
     e.preventDefault();
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase.from("training_sessions").insert({
-      user_id: user.id, log_date: todayStr(), phase: "post",
-      what_was_good: good || null, what_learned: learned || null,
-      what_improve: improve || null, challenging_moment: challenge || null,
-      how_handled: handled || null, load_level: load, pain_after: pain,
+    const { ok } = await persist(user.id, "training_post", async () => {
+      const r = await supabase.from("training_sessions").insert({
+        user_id: user.id, log_date: todayStr(), phase: "post",
+        what_was_good: good || null, what_learned: learned || null,
+        what_improve: improve || null, challenging_moment: challenge || null,
+        how_handled: handled || null, load_level: load, pain_after: pain,
+      });
+      return { error: r.error };
     });
     setSaving(false);
-    if (error) return toast("שמירה נכשלה, נסה שוב.", "error");
-    toast("סיכום האימון נשמר. כל הכבוד על העבודה.", "success");
+    if (!ok) return toast(SAVE_ERROR, "error");
+    toast(SAVE_SUCCESS, "success");
     navigate("/");
   }
 

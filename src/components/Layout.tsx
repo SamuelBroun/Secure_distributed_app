@@ -5,6 +5,7 @@ import { BottomNav } from "./BottomNav";
 import { FeedbackWidget } from "./FeedbackWidget";
 import { useTheme } from "../context/ThemeContext";
 import { trackPageView } from "../lib/tracking";
+import { Sun, Moon, Settings as SettingsIcon, ChevronRight } from "lucide-react";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const { theme, toggle } = useTheme();
@@ -23,12 +24,14 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <Link to="/"><Wordmark /></Link>
           <div className="flex items-center gap-1.5">
             <button onClick={toggle} aria-label="מצב תצוגה"
-              className="flex h-10 w-10 items-center justify-center rounded-2xl surface">
-              {theme === "dark" ? "☀️" : "🌙"}
+              className="flex h-10 w-10 items-center justify-center rounded-2xl surface"
+              style={{ color: "var(--text)" }}>
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             <button onClick={() => navigate("/settings")} aria-label="הגדרות"
-              className="flex h-10 w-10 items-center justify-center rounded-2xl surface">
-              ⚙️
+              className="flex h-10 w-10 items-center justify-center rounded-2xl surface"
+              style={{ color: "var(--text)" }}>
+              <SettingsIcon size={18} />
             </button>
           </div>
         </div>
@@ -48,12 +51,10 @@ export function PageHeader({ title, subtitle, back }: { title: string; subtitle?
     <div className="mb-4 mt-2 flex items-start gap-2">
       {back && (
         <button onClick={() => navigate(-1)} aria-label="חזרה"
-          className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl surface">
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor"
-               strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {/* חץ ל-RTL: מצביע ימינה לחזרה */}
-            <path d="M9 6l6 6-6 6" />
-          </svg>
+          className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl surface"
+          style={{ color: "var(--text)" }}>
+          {/* ב-RTL החץ קדימה/חזרה מצביע ימינה */}
+          <ChevronRight size={20} />
         </button>
       )}
       <div>

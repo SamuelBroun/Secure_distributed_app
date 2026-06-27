@@ -4,15 +4,16 @@ import { getMemory } from "../lib/db";
 import type { MemoryItem } from "../lib/types";
 import { PageHeader } from "../components/Layout";
 import { EmptyState } from "../components/Cards";
+import { Icon } from "../components/Icon";
 import { Spinner } from "../components/Loading";
 
 const KIND_STYLE: Record<string, { icon: string; color: string }> = {
-  "מטרה": { icon: "🎯", color: "#163A5F" },
-  "פציעה": { icon: "🩹", color: "#D9A441" },
-  "הרגל": { icon: "🌱", color: "#7FAF79" },
-  "קושי": { icon: "🌧️", color: "#7fa3c6" },
-  "חוזקה": { icon: "💪", color: "#7FAF79" },
-  "דפוס": { icon: "🔁", color: "#a78bfa" },
+  "מטרה": { icon: "memory_goal", color: "#163A5F" },
+  "פציעה": { icon: "memory_injury", color: "#D9A441" },
+  "הרגל": { icon: "memory_habit", color: "#7FAF79" },
+  "קושי": { icon: "memory_difficulty", color: "#7fa3c6" },
+  "חוזקה": { icon: "memory_strength", color: "#7FAF79" },
+  "דפוס": { icon: "memory_pattern", color: "#a78bfa" },
 };
 
 export default function Memory() {
@@ -43,15 +44,15 @@ export default function Memory() {
       </div>
 
       {loading ? <Spinner /> : items.length === 0 ? (
-        <EmptyState icon="🧠" title="הזיכרון עוד נבנה" text="המשך למלא צ׳ק־אינים ולתעד מטרות – כאן יופיעו הדפוסים האישיים שלך." />
+        <EmptyState icon="memory_pattern" title="הזיכרון עוד נבנה" text="המשך למלא צ׳ק-אינים ולתעד מטרות – כאן יופיעו הדפוסים האישיים שלך." />
       ) : (
         <div className="space-y-5">
           {Object.entries(grouped).map(([kind, list]) => {
-            const style = KIND_STYLE[kind] ?? { icon: "•", color: "#94A3B8" };
+            const style = KIND_STYLE[kind] ?? { icon: "insight", color: "#94A3B8" };
             return (
               <div key={kind}>
                 <h2 className="mb-2 flex items-center gap-2 font-display font-bold">
-                  <span>{style.icon}</span> {kind}
+                  <span style={{ color: style.color }}><Icon name={style.icon} size={18} /></span> {kind}
                 </h2>
                 <div className="space-y-2">
                   {list.map((it) => (

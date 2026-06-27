@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { supabase } from "../../lib/supabase";
 import { todayStr } from "../../lib/db";
+import { persist, SAVE_SUCCESS, SAVE_ERROR } from "../../lib/save";
 import { PageHeader } from "../../components/Layout";
 import { Field, TextInput, TextArea, SaveBar } from "../../components/Form";
 
@@ -24,16 +25,19 @@ export default function PostMatch() {
     e.preventDefault();
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase.from("matches").insert({
-      user_id: user.id, log_date: todayStr(), phase: "post",
-      minutes_played: minutes ? Number(minutes) : null,
-      what_worked: worked || null, what_less_worked: lessWorked || null,
-      take_to_next: next || null, lost_focus_moment: lostFocus || null,
-      how_recovered: recovered || null,
+    const { ok } = await persist(user.id, "match_post", async () => {
+      const r = await supabase.from("matches").insert({
+        user_id: user.id, log_date: todayStr(), phase: "post",
+        minutes_played: minutes ? Number(minutes) : null,
+        what_worked: worked || null, what_less_worked: lessWorked || null,
+        take_to_next: next || null, lost_focus_moment: lostFocus || null,
+        how_recovered: recovered || null,
+      });
+      return { error: r.error };
     });
     setSaving(false);
-    if (error) return toast("שמירה נכשלה, נסה שוב.", "error");
-    toast("סיכום המשחק נשמר.", "success");
+    if (!ok) return toast(SAVE_ERROR, "error");
+    toast(SAVE_SUCCESS, "success");
     navigate("/");
   }
 

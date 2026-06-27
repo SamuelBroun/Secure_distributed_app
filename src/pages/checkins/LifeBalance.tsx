@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { supabase } from "../../lib/supabase";
 import { todayStr } from "../../lib/db";
+import { persist, SAVE_SUCCESS, SAVE_ERROR } from "../../lib/save";
 import { PageHeader } from "../../components/Layout";
 import { Field, ChipGroup, YesNo, TextArea, SaveBar } from "../../components/Form";
 
@@ -23,14 +24,17 @@ export default function LifeBalance() {
     e.preventDefault();
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase.from("life_balance_logs").insert({
-      user_id: user.id, log_date: todayStr(),
-      family_time: family, met_friends: friends, did_enjoyable: enjoy,
-      week_feeling: week, good_moment: moment || null,
+    const { ok } = await persist(user.id, "life_balance", async () => {
+      const r = await supabase.from("life_balance_logs").insert({
+        user_id: user.id, log_date: todayStr(),
+        family_time: family, met_friends: friends, did_enjoyable: enjoy,
+        week_feeling: week, good_moment: moment || null,
+      });
+      return { error: r.error };
     });
     setSaving(false);
-    if (error) return toast("שמירה נכשלה, נסה שוב.", "error");
-    toast("נשמר. כדורגל הוא חלק מהחיים שלך, לא כל החיים שלך.", "success");
+    if (!ok) return toast(SAVE_ERROR, "error");
+    toast(SAVE_SUCCESS, "success");
     navigate("/");
   }
 

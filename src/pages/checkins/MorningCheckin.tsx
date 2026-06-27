@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { supabase } from "../../lib/supabase";
 import { getTodayCheckin, todayStr } from "../../lib/db";
+import { persist, SAVE_SUCCESS, SAVE_ERROR } from "../../lib/save";
 import { PageHeader } from "../../components/Layout";
 import { Field, ChipGroup, TextArea, TextInput, SaveBar } from "../../components/Form";
 import { Spinner } from "../../components/Loading";
@@ -50,13 +51,15 @@ export default function MorningCheckin() {
       sleep_quality: sleepQuality, wake_feeling: wake, body_feeling: body,
       mood, pain_level: pain, today_type: todayType, daily_goal: goal || null,
     };
-    const q = existingId
-      ? supabase.from("daily_checkins").update(payload).eq("id", existingId)
-      : supabase.from("daily_checkins").insert(payload);
-    const { error } = await q;
+    const { ok } = await persist(user.id, "checkin_morning", async () => {
+      const r = existingId
+        ? await supabase.from("daily_checkins").update(payload).eq("id", existingId)
+        : await supabase.from("daily_checkins").insert(payload);
+      return { error: r.error };
+    });
     setSaving(false);
-    if (error) return toast("שמירה נכשלה, נסה שוב.", "error");
-    toast("צ׳ק־אין הבוקר נשמר. שיהיה יום מצוין!", "success");
+    if (!ok) return toast(SAVE_ERROR, "error");
+    toast(SAVE_SUCCESS, "success");
     navigate("/");
   }
 

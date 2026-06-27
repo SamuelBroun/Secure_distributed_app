@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CheckCircle2 } from "lucide-react";
 import { MarketingLayout } from "../../components/MarketingLayout";
 import { supabase } from "../../lib/supabase";
 
@@ -35,7 +36,7 @@ export default function Waitlist() {
       <section className="mx-auto max-w-xl px-5 pt-16 pb-20">
         {done ? (
           <div className="card text-center animate-scale-in">
-            <span className="text-5xl">🎉</span>
+            <span className="flex justify-center" style={{ color: "var(--brand)" }}><CheckCircle2 size={52} /></span>
             <h1 className="mt-4 font-display text-3xl font-extrabold">אתה ברשימה!</h1>
             <p className="mt-3 muted leading-relaxed">
               תודה שהצטרפת. נעדכן אותך במייל ברגע שמקומות בטא נוספים ייפתחו.

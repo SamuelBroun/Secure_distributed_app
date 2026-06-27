@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { KNOWLEDGE } from "../lib/knowledge";
 import { PageHeader } from "../components/Layout";
+import { Icon } from "../components/Icon";
 
 export default function Knowledge() {
   return (
@@ -9,7 +10,10 @@ export default function Knowledge() {
       <div className="grid grid-cols-2 gap-3">
         {KNOWLEDGE.map((a) => (
           <Link key={a.slug} to={`/knowledge/${a.slug}`} className="card card-hover h-full">
-            <span className="text-3xl">{a.icon}</span>
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl"
+                  style={{ background: "var(--surface-2)", color: "var(--brand)" }}>
+              <Icon name={a.icon} size={22} />
+            </span>
             <h3 className="mt-2 font-display font-bold">{a.title}</h3>
             <p className="mt-1 text-xs muted leading-relaxed">{a.summary}</p>
           </Link>

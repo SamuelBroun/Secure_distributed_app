@@ -12,7 +12,7 @@ export interface Article {
 export const KNOWLEDGE: Article[] = [
   {
     slug: "sleep",
-    icon: "🌙",
+    icon: "sleep",
     category: "שינה",
     title: "שינה",
     summary: "השינה היא כלי ההתאוששות החזק ביותר של הגוף.",
@@ -25,7 +25,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "recovery",
-    icon: "♻️",
+    icon: "recovery",
     category: "התאוששות",
     title: "התאוששות",
     summary: "התאוששות איכותית היא חלק מהאימון, לא תוספת לו.",
@@ -38,7 +38,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "nutrition",
-    icon: "🥗",
+    icon: "nutrition",
     category: "תזונה",
     title: "תזונה",
     summary: "תזונה נכונה מספקת דלק לביצועים ולהתאוששות.",
@@ -51,7 +51,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "hydration",
-    icon: "💧",
+    icon: "hydration",
     category: "הידרציה",
     title: "הידרציה",
     summary: "אפילו התייבשות קלה משפיעה על ביצועים וריכוז.",
@@ -63,7 +63,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "sport-psychology",
-    icon: "🧠",
+    icon: "psychology",
     category: "פסיכולוגיית ספורט",
     title: "פסיכולוגיית ספורט",
     summary: "הראש הוא שריר – אפשר לאמן אותו כמו כל שריר אחר.",
@@ -76,7 +76,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "pre-match-stress",
-    icon: "🎯",
+    icon: "pre-match",
     category: "לחץ לפני משחק",
     title: "לחץ לפני משחק",
     summary: "מתח לפני משחק הוא טבעי – המטרה לנתב אותו לאנרגיה.",
@@ -88,7 +88,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "handling-mistakes",
-    icon: "🔁",
+    icon: "mistakes",
     category: "התמודדות עם טעויות",
     title: "התמודדות עם טעויות",
     summary: "ההבדל בין שחקנים הוא לא בכמות הטעויות אלא במהירות החזרה.",
@@ -100,7 +100,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "leadership",
-    icon: "🧭",
+    icon: "leadership",
     category: "מנהיגות",
     title: "מנהיגות",
     summary: "מנהיגות נמדדת בהשפעה על הקבוצה, לא רק בסרט קפטן.",
@@ -112,7 +112,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "confidence",
-    icon: "💪",
+    icon: "confidence",
     category: "ביטחון",
     title: "ביטחון",
     summary: "ביטחון נבנה מהצטברות של פעולות קטנות מוצלחות.",
@@ -124,7 +124,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "injury-prevention",
-    icon: "🛡️",
+    icon: "injury-prevention",
     category: "מניעת פציעות",
     title: "מניעת פציעות",
     summary: "מניעה חכמה מבוססת על איזון בין עומס להתאוששות.",
@@ -136,7 +136,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "mental-health",
-    icon: "🌿",
+    icon: "mental-health",
     category: "בריאות מנטלית",
     title: "בריאות מנטלית",
     summary: "הבריאות המנטלית חשובה בדיוק כמו הכושר הגופני.",
@@ -148,7 +148,7 @@ export const KNOWLEDGE: Article[] = [
   },
   {
     slug: "life-balance",
-    icon: "⚖️",
+    icon: "life-balance",
     category: "חיים מחוץ לכדורגל",
     title: "חיים מחוץ לכדורגל",
     summary: "זהות רחבה מעבר לכדורגל תורמת ליציבות ולאריכות קריירה.",

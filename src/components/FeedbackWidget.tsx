@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import { supabase } from "../lib/supabase";
 import { track } from "../lib/tracking";
+import { MessageSquare, Star, X } from "lucide-react";
 
 const TYPES = ["רעיון", "באג", "שבח", "אחר"];
 
@@ -36,8 +37,8 @@ export function FeedbackWidget() {
         onClick={() => setOpen(true)}
         aria-label="משוב"
         className="fixed bottom-28 left-4 z-30 flex h-12 w-12 items-center justify-center rounded-2xl shadow-float"
-        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
-        💬
+        style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--brand)" }}>
+        <MessageSquare size={20} />
       </button>
 
       {open && (
@@ -48,7 +49,7 @@ export function FeedbackWidget() {
                onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-display text-lg font-bold">שיתוף משוב</h2>
-              <button onClick={() => setOpen(false)} className="muted text-xl">✕</button>
+              <button onClick={() => setOpen(false)} aria-label="סגירה" className="muted"><X size={20} /></button>
             </div>
 
             <label className="label">סוג</label>
@@ -62,8 +63,10 @@ export function FeedbackWidget() {
             <label className="label">דירוג חוויה</label>
             <div className="mb-4 flex justify-center gap-1.5">
               {[1, 2, 3, 4, 5].map((n) => (
-                <button key={n} onClick={() => setRating(n)} className="text-3xl transition active:scale-90">
-                  {n <= rating ? "⭐" : "☆"}
+                <button key={n} onClick={() => setRating(n)} className="transition active:scale-90" aria-label={`דירוג ${n}`}>
+                  <Star size={28} strokeWidth={1.8}
+                    fill={n <= rating ? "#D9A441" : "none"}
+                    color={n <= rating ? "#D9A441" : "var(--text-muted)"} />
                 </button>
               ))}
             </div>

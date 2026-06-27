@@ -8,6 +8,7 @@ import {
   setRemindersEnabled, scheduleDailyReminder, showLocalNotification,
 } from "../lib/notifications";
 import { PageHeader } from "../components/Layout";
+import { Sun, Moon, ChevronLeft } from "lucide-react";
 
 export default function Settings() {
   const { user, profile, signOut } = useAuth();
@@ -60,14 +61,14 @@ export default function Settings() {
       {/* מצב תצוגה */}
       <SettingGroup title="מצב תצוגה">
         <div className="flex gap-2">
-          {([["light", "בהיר ☀️"], ["dark", "כהה 🌙"]] as const).map(([k, l]) => (
+          {([["light", "בהיר", Sun], ["dark", "כהה", Moon]] as const).map(([k, l, Ico]) => (
             <button key={k} onClick={() => setTheme(k)}
-              className="flex-1 rounded-2xl py-3 text-sm font-semibold transition"
+              className="flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold transition"
               style={{
                 background: theme === k ? "var(--brand)" : "var(--surface-2)",
                 color: theme === k ? "#fff" : "var(--text)",
               }}>
-              {l}
+              <Ico size={16} /> {l}
             </button>
           ))}
         </div>
@@ -97,13 +98,11 @@ export default function Settings() {
 
       {(profile?.role === "coach" || profile?.role === "admin") && (
         <SettingGroup title="ניהול">
-          {(profile?.role === "coach" || profile?.role === "admin") && (
-            <LinkRow label="🧭 לוח מאמן" onClick={() => navigate("/coach")} />
-          )}
+          <LinkRow label="לוח מאמן" onClick={() => navigate("/coach")} />
           {profile?.role === "admin" && (
             <>
-              <LinkRow label="🛠️ לוח ניהול" onClick={() => navigate("/admin")} />
-              <LinkRow label="📊 אנליטיקות" onClick={() => navigate("/analytics")} />
+              <LinkRow label="לוח ניהול" onClick={() => navigate("/admin")} />
+              <LinkRow label="אנליטיקות" onClick={() => navigate("/analytics")} />
             </>
           )}
         </SettingGroup>
@@ -146,7 +145,7 @@ function LinkRow({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <button onClick={onClick} className="flex w-full items-center justify-between py-2.5 text-right">
       <span className="font-medium">{label}</span>
-      <span className="muted">›</span>
+      <ChevronLeft size={18} className="muted" />
     </button>
   );
 }

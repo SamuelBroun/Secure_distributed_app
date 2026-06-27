@@ -52,7 +52,7 @@ export default function Coach() {
       <PageHeader title="לוח מאמן" subtitle="מצב השחקנים שלך במבט אחד." />
 
       {rows.length === 0 ? (
-        <EmptyState icon="🧭" title="אין שחקנים מקושרים"
+        <EmptyState icon="coach" title="אין שחקנים מקושרים"
           text="ברגע שמנהל המערכת יקשר אליך שחקנים, הם יופיעו כאן עם מצב יומי ותובנות." />
       ) : (
         <div className="space-y-3">

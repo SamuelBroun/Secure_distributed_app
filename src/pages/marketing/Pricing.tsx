@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Check } from "lucide-react";
 import { MarketingLayout } from "../../components/MarketingLayout";
 
 const PLANS = [
@@ -77,7 +78,7 @@ export default function Pricing() {
             <ul className="mb-6 flex-1 space-y-2.5">
               {p.features.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm">
-                  <span style={{ color: "var(--brand)" }}>✓</span><span>{f}</span>
+                  <Check size={16} className="mt-0.5 shrink-0" style={{ color: "var(--brand)" }} /><span>{f}</span>
                 </li>
               ))}
             </ul>

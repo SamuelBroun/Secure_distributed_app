@@ -5,7 +5,7 @@ import type {
   DailyCheckin, TrainingSession, RecoveryLog, LifeBalanceLog,
   SuccessJournalEntry, InjuryRecord, PlayerGoal, MemoryItem, Insight,
 } from "./types";
-import { generateInsights, deriveMemory } from "./ai/insights";
+import { generateInsights, deriveMemory, recoveryScore } from "./ai/insights";
 
 export const todayStr = () => format(new Date(), "yyyy-MM-dd");
 
@@ -157,4 +157,79 @@ export async function getJournalEntries(userId: string): Promise<SuccessJournalE
     .order("created_at", { ascending: false })
     .limit(30);
   return (data as SuccessJournalEntry[]) ?? [];
+}
+
+// --- אותות הקשר עבור מאמן ה-AI ---
+export interface CoachSignals {
+  avgSleep: number | null;
+  avgRecovery: number | null;
+  commonMood: string | null;
+  recentPain: boolean;
+  goals: string[];
+  memory: string[];
+}
+
+export async function getCoachSignals(userId: string): Promise<CoachSignals> {
+  const data = await getAnalysisData(userId, 14);
+  const sleep = data.checkins.map((c) => c.sleep_hours).filter((v): v is number => !!v);
+  const avgSleep = sleep.length ? sleep.reduce((a, b) => a + b, 0) / sleep.length : null;
+  const recScores = data.recoveries.map(recoveryScore);
+  const avgRecovery = recScores.length ? recScores.reduce((a, b) => a + b, 0) / recScores.length : null;
+  const moodCount: Record<string, number> = {};
+  data.checkins.forEach((c) => { if (c.mood) moodCount[c.mood] = (moodCount[c.mood] || 0) + 1; });
+  const commonMood = Object.keys(moodCount).sort((a, b) => moodCount[b] - moodCount[a])[0] || null;
+  const recentPain = data.checkins.slice(-3).some((c) => c.pain_level && c.pain_level !== "לא");
+
+  const [goals, memory] = await Promise.all([getGoals(userId), getMemory(userId)]);
+  return {
+    avgSleep, avgRecovery, commonMood, recentPain,
+    goals: goals.map((g) => g.title),
+    memory: memory.slice(0, 6).map((m) => m.content),
+  };
+}
+
+// --- שיחות מאמן ה-AI ---
+export interface CoachMessage {
+  id: string;
+  conversation_id: string;
+  user_id: string;
+  role: "user" | "coach";
+  content: string;
+  created_at: string;
+}
+
+export async function getLatestConversation(userId: string): Promise<string | null> {
+  const { data } = await supabase
+    .from("ai_conversations")
+    .select("id")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  return (data as { id: string } | null)?.id ?? null;
+}
+
+export async function createConversation(userId: string, topic: string, title: string): Promise<string | null> {
+  const { data } = await supabase
+    .from("ai_conversations")
+    .insert({ user_id: userId, topic, title })
+    .select("id")
+    .maybeSingle();
+  return (data as { id: string } | null)?.id ?? null;
+}
+
+export async function getMessages(conversationId: string): Promise<CoachMessage[]> {
+  const { data } = await supabase
+    .from("ai_messages")
+    .select("*")
+    .eq("conversation_id", conversationId)
+    .order("created_at", { ascending: true });
+  return (data as CoachMessage[]) ?? [];
+}
+
+export async function addMessage(
+  userId: string, conversationId: string, role: "user" | "coach", content: string,
+): Promise<void> {
+  await supabase.from("ai_messages").insert({ conversation_id: conversationId, user_id: userId, role, content });
+  await supabase.from("ai_conversations").update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
 }

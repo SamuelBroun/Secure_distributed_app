@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { Sun, Moon } from "lucide-react";
 import { Wordmark } from "./Logo";
 import { useTheme } from "../context/ThemeContext";
 
@@ -14,8 +15,9 @@ export function MarketingLayout({ children }: { children: ReactNode }) {
             <Link to="/pricing" className="hidden text-sm font-medium muted hover:opacity-80 sm:block">תמחור</Link>
             <Link to="/waitlist" className="hidden text-sm font-medium muted hover:opacity-80 sm:block">רשימת המתנה</Link>
             <button onClick={toggle} aria-label="מצב תצוגה"
-              className="flex h-9 w-9 items-center justify-center rounded-xl surface">
-              {theme === "dark" ? "☀️" : "🌙"}
+              className="flex h-9 w-9 items-center justify-center rounded-xl surface"
+              style={{ color: "var(--text)" }}>
+              {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
             </button>
             <Link to="/login" className="text-sm font-semibold" style={{ color: "var(--brand)" }}>כניסה</Link>
             <Link to="/register" className="btn btn-primary !px-4 !py-2 text-sm">הרשמה</Link>

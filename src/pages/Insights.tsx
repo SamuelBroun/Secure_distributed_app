@@ -86,7 +86,7 @@ export default function Insights() {
             ציר התובנות
           </SectionTitle>
           {insights.length === 0 ? (
-            <EmptyState icon="✨" title="אין תובנות עדיין" text="מלא צ׳ק־אינים כדי שנוכל ללמוד אותך." />
+            <EmptyState icon="insight" title="אין תובנות עדיין" text="מלא צ׳ק-אינים כדי שנוכל ללמוד אותך." />
           ) : (
             <div className="space-y-3">
               {insights.map((ins, i) => (

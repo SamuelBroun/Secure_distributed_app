@@ -4,15 +4,13 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { supabase } from "../../lib/supabase";
 import { getTodayRecovery, todayStr } from "../../lib/db";
+import { persist, SAVE_SUCCESS, SAVE_ERROR } from "../../lib/save";
 import { RECOVERY_FIELDS } from "../../lib/ai/insights";
 import { PageHeader } from "../../components/Layout";
 import { SaveBar } from "../../components/Form";
 import { Spinner } from "../../components/Loading";
-
-const ICONS: Record<string, string> = {
-  stretching: "🧘", walking: "🚶", massage: "💆", foam_roll: "🌀", ice: "🧊",
-  breathing: "🌬️", early_sleep: "🌙", post_meal: "🍽️", hydration: "💧",
-};
+import { Icon } from "../../components/Icon";
+import { Check } from "lucide-react";
 
 export default function Recovery() {
   const { user } = useAuth();
@@ -44,13 +42,15 @@ export default function Recovery() {
     setSaving(true);
     const payload: Record<string, unknown> = { user_id: user.id, log_date: todayStr() };
     RECOVERY_FIELDS.forEach((f) => (payload[f.key] = !!checked[f.key]));
-    const q = id
-      ? supabase.from("recovery_logs").update(payload).eq("id", id)
-      : supabase.from("recovery_logs").insert(payload);
-    const { error } = await q;
+    const { ok } = await persist(user.id, "recovery", async () => {
+      const r = id
+        ? await supabase.from("recovery_logs").update(payload).eq("id", id)
+        : await supabase.from("recovery_logs").insert(payload);
+      return { error: r.error };
+    });
     setSaving(false);
-    if (error) return toast("שמירה נכשלה, נסה שוב.", "error");
-    toast("ההתאוששות נשמרה. הגוף שלך מודה לך.", "success");
+    if (!ok) return toast(SAVE_ERROR, "error");
+    toast(SAVE_SUCCESS, "success");
     navigate("/");
   }
 
@@ -73,11 +73,13 @@ export default function Recovery() {
             <button type="button" key={f.key} onClick={() => toggle(f.key)}
               className="card flex w-full items-center gap-3 py-3.5 transition active:scale-[0.99]"
               style={{ borderColor: on ? "var(--brand)" : "var(--border)" }}>
-              <span className="text-xl">{ICONS[f.key]}</span>
+              <span style={{ color: on ? "var(--brand)" : "var(--text-muted)" }}>
+                <Icon name={f.key} size={22} />
+              </span>
               <span className="flex-1 text-right font-medium">{f.label}</span>
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg text-white transition"
-                    style={{ background: on ? "var(--brand)" : "var(--surface-2)", color: on ? "#fff" : "transparent" }}>
-                ✓
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg transition"
+                    style={{ background: on ? "var(--brand)" : "var(--surface-2)" }}>
+                {on && <Check size={16} color="#fff" strokeWidth={3} />}
               </span>
             </button>
           );

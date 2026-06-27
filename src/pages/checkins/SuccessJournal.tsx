@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { supabase } from "../../lib/supabase";
 import { todayStr, getJournalEntries, rememberItem } from "../../lib/db";
+import { persist, SAVE_SUCCESS, SAVE_ERROR } from "../../lib/save";
 import type { SuccessJournalEntry } from "../../lib/types";
 import { PageHeader } from "../../components/Layout";
 import { Field, TextArea, SaveBar } from "../../components/Form";
@@ -26,15 +27,18 @@ export default function SuccessJournal() {
     e.preventDefault();
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase.from("success_journal").insert({
-      user_id: user.id, log_date: todayStr(),
-      did_well: didWell || null, proud_of: proud || null,
-      what_advanced: advanced || null, learned_about_self: learned || null,
+    const { ok } = await persist(user.id, "success_journal", async () => {
+      const r = await supabase.from("success_journal").insert({
+        user_id: user.id, log_date: todayStr(),
+        did_well: didWell || null, proud_of: proud || null,
+        what_advanced: advanced || null, learned_about_self: learned || null,
+      });
+      return { error: r.error };
     });
-    if (!error && learned) await rememberItem(user.id, "חוזקה", learned);
+    if (ok && learned) await rememberItem(user.id, "חוזקה", learned);
     setSaving(false);
-    if (error) return toast("שמירה נכשלה, נסה שוב.", "error");
-    toast("נשמר ביומן ההצלחות. כל יום נחשב.", "success");
+    if (!ok) return toast(SAVE_ERROR, "error");
+    toast(SAVE_SUCCESS, "success");
     setDidWell(""); setProud(""); setAdvanced(""); setLearned("");
     load();
   }
@@ -54,7 +58,7 @@ export default function SuccessJournal() {
 
       <h2 className="mb-3 mt-8 font-display text-lg font-bold">רשומות אחרונות</h2>
       {entries.length === 0 ? (
-        <EmptyState icon="📔" title="היומן ריק עדיין" text="כתוב את ההצלחה הראשונה שלך היום." />
+        <EmptyState icon="journal" title="היומן ריק עדיין" text="כתוב את ההצלחה הראשונה שלך היום." />
       ) : (
         <div className="space-y-3">
           {entries.map((en) => (

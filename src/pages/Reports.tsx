@@ -5,6 +5,7 @@ import { buildWeeklyReport, buildMonthlyReport } from "../lib/ai/reports";
 import type { WeeklyReportContent, MonthlyReportContent } from "../lib/types";
 import { PageHeader } from "../components/Layout";
 import { Spinner } from "../components/Loading";
+import { Icon } from "../components/Icon";
 
 export default function Reports() {
   const { user } = useAuth();
@@ -55,7 +56,9 @@ function ListCard({ icon, title, items, accent }: { icon: string; title: string;
   return (
     <div className="card animate-fade-up">
       <div className="mb-2 flex items-center gap-2">
-        <span className="flex h-8 w-8 items-center justify-center rounded-xl" style={{ background: `${accent}33` }}>{icon}</span>
+        <span className="flex h-8 w-8 items-center justify-center rounded-xl" style={{ background: `${accent}22`, color: accent }}>
+          <Icon name={icon} size={17} />
+        </span>
         <h3 className="font-display font-bold">{title}</h3>
       </div>
       <ul className="space-y-1.5">
@@ -76,11 +79,11 @@ function WeeklyView({ r }: { r: WeeklyReportContent }) {
         <p className="text-sm opacity-80">דוח שבועי</p>
         <p className="font-display text-xl font-extrabold">{r.period}</p>
       </div>
-      <ListCard icon="✅" title="מה עבד השבוע" items={r.what_worked} accent="#7FAF79" />
-      <ListCard icon="📈" title="מה השתפר" items={r.what_improved} accent="#163A5F" />
-      <ListCard icon="👀" title="מה דרש תשומת לב" items={r.needs_attention} accent="#D9A441" />
-      <ListCard icon="🔁" title="מגמות" items={r.trends} accent="#7fa3c6" />
-      <ListCard icon="🌱" title="הרגלים שנבנו" items={r.habits} accent="#7FAF79" />
+      <ListCard icon="worked" title="מה עבד השבוע" items={r.what_worked} accent="#7FAF79" />
+      <ListCard icon="improved" title="מה השתפר" items={r.what_improved} accent="#163A5F" />
+      <ListCard icon="attention" title="מה דרש תשומת לב" items={r.needs_attention} accent="#D9A441" />
+      <ListCard icon="trends" title="מגמות" items={r.trends} accent="#7fa3c6" />
+      <ListCard icon="habits" title="הרגלים שנבנו" items={r.habits} accent="#7FAF79" />
       <div className="card" style={{ background: "var(--success)", borderColor: "var(--success)" }}>
         <p className="text-xs font-bold" style={{ color: "#143020" }}>פעולה אחת לשבוע הבא</p>
         <p className="mt-1 font-medium" style={{ color: "#143020" }}>{r.next_week_action}</p>
@@ -91,13 +94,13 @@ function WeeklyView({ r }: { r: WeeklyReportContent }) {
 
 function MonthlyView({ r }: { r: MonthlyReportContent }) {
   const rows: [string, string, string][] = [
-    ["😴", "שינה", r.sleep],
-    ["♻️", "התאוששות", r.recovery],
-    ["⚡", "עומסים", r.load],
-    ["🧠", "מנטלי", r.mental],
-    ["⚖️", "חיים אישיים", r.life],
-    ["🎯", "מטרות", r.goals],
-    ["⚽", "ביצועים", r.performance],
+    ["sleep", "שינה", r.sleep],
+    ["recovery", "התאוששות", r.recovery],
+    ["load", "עומסים", r.load],
+    ["mental", "מנטלי", r.mental],
+    ["life", "חיים אישיים", r.life],
+    ["goals", "מטרות", r.goals],
+    ["performance", "ביצועים", r.performance],
   ];
   return (
     <div className="space-y-3">
@@ -107,7 +110,10 @@ function MonthlyView({ r }: { r: MonthlyReportContent }) {
       </div>
       {rows.map(([icon, title, text]) => (
         <div key={title} className="card flex items-start gap-3 animate-fade-up">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ background: "var(--surface-2)" }}>{icon}</span>
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
+                style={{ background: "var(--surface-2)", color: "var(--brand)" }}>
+            <Icon name={icon} size={18} />
+          </span>
           <div>
             <p className="font-display font-bold">{title}</p>
             <p className="text-sm muted">{text}</p>
