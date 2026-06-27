@@ -55,6 +55,7 @@ export function generateInsights(
       detected: "עדיין אין מספיק נתונים כדי לזהות מגמות.",
       why: "ככל שתמלא צ׳ק־אין יומי, PLAYERMIND ילמד אותך ויספק תובנות אישיות יותר.",
       action: "מלא היום צ׳ק־אין בוקר קצר – זו ההתחלה.",
+      trend: "מבוסס על נקודת מידע ראשונית.",
     }];
   }
 
@@ -168,6 +169,19 @@ export function generateInsights(
     }
   }
 
+  // --- קשר שינה ↔ מצב רוח / פוקוס (24 שעות אחרונות) ---
+  const last = checkins[checkins.length - 1];
+  if (last && last.sleep_hours && last.sleep_hours < 6.5 && last.mood && MOOD[last.mood] <= 2) {
+    insights.push({
+      period, category: "שינה",
+      title: "שינה קצרה אתמול והיום מעט עומס",
+      detected: "בלילה האחרון ישנת מעט, והבוקר דיווחת על מצב רוח עמוס/לחוץ יותר.",
+      why: "אצל שחקנים רבים שינה קצרה משפיעה על הפוקוס והרגישות במהלך היום.",
+      action: "היום כדאי להוריד מעט עומס מנטלי ולתכנן שינה מוקדמת הערב.",
+      trend: "מבוסס על נקודת מידע אחת (24 שעות).",
+    });
+  }
+
   if (!insights.length) {
     insights.push({
       period, category: "כללי",
@@ -178,21 +192,30 @@ export function generateInsights(
     });
   }
 
-  return insights;
+  // עוצמת מגמה לכל תובנה שלא הוגדרה לה במפורש
+  const strong = checkins.length >= 7;
+  return insights.map((i) => ({
+    ...i,
+    trend: i.trend ?? (strong
+      ? "דפוס שחוזר על עצמו לאורך זמן."
+      : "מבוסס על מגמה ראשונית. נמשיך לעקוב."),
+  }));
 }
 
 // --- בניית פריטי זיכרון אישי מתוך תובנות ---
-export function deriveMemory(insights: Insight[]): { kind: string; content: string }[] {
-  const mem: { kind: string; content: string }[] = [];
+export function deriveMemory(insights: Insight[]): { kind: string; domain: string; content: string }[] {
+  const mem: { kind: string; domain: string; content: string }[] = [];
   for (const ins of insights) {
     if (ins.category === "שינה" && ins.title.includes("קצרה")) {
-      mem.push({ kind: "דפוס", content: "אצלך, לאחר לילות קצרים מופיעה יותר עייפות באימון." });
+      mem.push({ kind: "דפוס", domain: "התאוששות", content: "אצלך, לאחר לילות קצרים מופיעה יותר עייפות ופחות פוקוס." });
     } else if (ins.category === "חיים") {
-      mem.push({ kind: "דפוס", content: "אצלך, זמן עם המשפחה קשור ליציבות במצב הרוח." });
+      mem.push({ kind: "דפוס", domain: "חיים", content: "אצלך, זמן עם המשפחה קשור ליציבות במצב הרוח." });
     } else if (ins.category === "עומס") {
-      mem.push({ kind: "דפוס", content: "אצלך, עומס גבוה נוטה להופיע יחד עם כאבים." });
+      mem.push({ kind: "דפוס", domain: "פיזי", content: "אצלך, עומס גבוה נוטה להופיע יחד עם כאבים." });
     } else if (ins.category === "התאוששות" && ins.title.includes("חזקים")) {
-      mem.push({ kind: "חוזקה", content: "התאוששות עקבית היא אחת החוזקות שלך." });
+      mem.push({ kind: "חוזקה", domain: "התאוששות", content: "התאוששות עקבית היא אחת החוזקות שלך." });
+    } else if (ins.category === "מנטלי" && ins.title.includes("לחץ")) {
+      mem.push({ kind: "דפוס", domain: "מנטלי", content: "אצלך, מופיעה נטייה ללחץ מצטבר בתקופות עמוסות." });
     }
   }
   return mem;

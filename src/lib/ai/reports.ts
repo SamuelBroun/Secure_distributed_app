@@ -1,10 +1,12 @@
-// PLAYERMIND – דוחות שבועיים וחודשיים (נגזרים מהנתונים)
+// PLAYERMIND – דוחות יומיים, שבועיים וחודשיים (נגזרים מהנתונים)
 
 import type {
   DailyCheckin, TrainingSession, RecoveryLog, LifeBalanceLog,
-  WeeklyReportContent, MonthlyReportContent,
+  WeeklyReportContent, MonthlyReportContent, DailyReportContent,
 } from "../types";
+import { format } from "date-fns";
 import { recoveryScore } from "./insights";
+import { computeReadiness } from "./readiness";
 
 interface Summary {
   checkins: number;
@@ -89,5 +91,38 @@ export function buildMonthlyReport(
     life: "המשך לשמור על איזון בין כדורגל לחיים האישיים.",
     goals: "בדוק את המטרות שלך בפרופיל ועדכן את הפעילות.",
     performance: `נרשמו ${s.checkins} ימי מעקב החודש.`,
+  };
+}
+
+// דוח יומי – סקירה אישית כמו ממאמן ביצועים
+export function buildDailyReport(
+  checkins: DailyCheckin[],
+  recoveries: RecoveryLog[],
+  trainings: TrainingSession[],
+  life: LifeBalanceLog[],
+): DailyReportContent {
+  const today = checkins[checkins.length - 1] ?? null;
+  const readiness = computeReadiness({ checkins, recoveries, trainings, life }, today);
+
+  const whatHappened = today
+    ? `היום סוג הפעילות: ${today.today_type ?? "לא צוין"}. ${readiness.explanation}`
+    : "עדיין לא הושלם צ׳ק-אין להיום. השלמה קצרה תאפשר סקירה אישית מדויקת יותר.";
+
+  const goodDomain = readiness.domains.find((d) => d.tone === "good");
+  const attnDomain = readiness.domains.find((d) => d.tone === "attention");
+
+  return {
+    date: format(new Date(), "yyyy-MM-dd"),
+    what_happened: whatHappened,
+    what_worked: goodDomain
+      ? `${goodDomain.domain}: ${goodDomain.note}`
+      : "שמרת על שגרה בסיסית – זו כבר התקדמות.",
+    needs_attention: attnDomain
+      ? `${attnDomain.domain}: ${attnDomain.note}`
+      : "אין נקודה דחופה לתשומת לב היום.",
+    tomorrow_action: readiness.focus,
+    personal_insight: today?.daily_goal
+      ? `המטרה שהצבת להיום: "${today.daily_goal}". שווה לבדוק מול עצמך אם התקדמת אליה.`
+      : "מחר נסה להגדיר מטרה אחת ברורה לתחילת היום – זה ממקד את כל השאר.",
   };
 }

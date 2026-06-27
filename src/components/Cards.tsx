@@ -70,6 +70,9 @@ export function InsightCard({ insight, compact = false }: { insight: Insight; co
         <p className="text-xs font-semibold" style={{ color: "var(--brand)" }}>פעולה אחת להיום</p>
         <p className="mt-0.5 text-sm font-medium">{insight.action}</p>
       </div>
+      {!compact && insight.trend && (
+        <p className="mt-2 text-xs muted">{insight.trend}</p>
+      )}
     </div>
   );
 }

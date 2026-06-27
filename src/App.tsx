@@ -28,6 +28,8 @@ const Reports = lazy(() => import("./pages/Reports"));
 const Memory = lazy(() => import("./pages/Memory"));
 const Goals = lazy(() => import("./pages/Goals"));
 const AICoach = lazy(() => import("./pages/AICoach"));
+const Schedule = lazy(() => import("./pages/Schedule"));
+const MentalPrep = lazy(() => import("./pages/MentalPrep"));
 const Knowledge = lazy(() => import("./pages/Knowledge"));
 const KnowledgeArticle = lazy(() => import("./pages/KnowledgeArticle"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -96,6 +98,8 @@ export default function App() {
       <Route path="/insights" element={<Protected><Insights /></Protected>} />
       <Route path="/goals" element={<Protected><Goals /></Protected>} />
       <Route path="/ai-coach" element={<Protected><AICoach /></Protected>} />
+      <Route path="/schedule" element={<Protected><Schedule /></Protected>} />
+      <Route path="/mental/:type" element={<Protected><MentalPrep /></Protected>} />
       <Route path="/reports" element={<Protected><Reports /></Protected>} />
       <Route path="/memory" element={<Protected><Memory /></Protected>} />
       <Route path="/knowledge" element={<Protected><Knowledge /></Protected>} />

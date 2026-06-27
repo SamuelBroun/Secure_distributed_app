@@ -4,8 +4,11 @@ import { format, subDays } from "date-fns";
 import type {
   DailyCheckin, TrainingSession, RecoveryLog, LifeBalanceLog,
   SuccessJournalEntry, InjuryRecord, PlayerGoal, MemoryItem, Insight,
+  ScheduleBlock, HabitRecord, MentalPrep, DailyReportContent,
 } from "./types";
 import { generateInsights, deriveMemory, recoveryScore } from "./ai/insights";
+
+export const isoDate = (d: Date) => format(d, "yyyy-MM-dd");
 
 export const todayStr = () => format(new Date(), "yyyy-MM-dd");
 
@@ -93,7 +96,7 @@ export async function computeAndSaveInsights(userId: string, period: string): Pr
   return insights;
 }
 
-export async function rememberItem(userId: string, kind: string, content: string) {
+export async function rememberItem(userId: string, kind: string, content: string, domain?: string) {
   if (!content?.trim()) return;
   const { data: existing } = await supabase
     .from("ai_memory")
@@ -107,7 +110,7 @@ export async function rememberItem(userId: string, kind: string, content: string
       .update({ weight: (existing as MemoryItem).weight + 1, updated_at: new Date().toISOString() })
       .eq("id", (existing as MemoryItem).id);
   } else {
-    await supabase.from("ai_memory").insert({ user_id: userId, kind, content });
+    await supabase.from("ai_memory").insert({ user_id: userId, kind, content, domain: domain ?? null });
   }
 }
 
@@ -116,9 +119,21 @@ export async function getMemory(userId: string): Promise<MemoryItem[]> {
     .from("ai_memory")
     .select("*")
     .eq("user_id", userId)
+    .eq("hidden", false)
     .order("weight", { ascending: false })
     .order("updated_at", { ascending: false });
   return (data as MemoryItem[]) ?? [];
+}
+
+export async function hideMemory(id: string) {
+  await supabase.from("ai_memory").update({ hidden: true }).eq("id", id);
+}
+
+// עוצמת דפוס לפי כמה פעמים חזר (ללא מספרים מול המשתמש)
+export function memoryStrength(weight: number): string {
+  if (weight >= 3) return "דפוס שחוזר על עצמו";
+  if (weight === 2) return "מגמה מתפתחת";
+  return "סימן ראשוני";
 }
 
 export async function getInsights(userId: string, period: string): Promise<Insight[]> {
@@ -232,4 +247,112 @@ export async function addMessage(
 ): Promise<void> {
   await supabase.from("ai_messages").insert({ conversation_id: conversationId, user_id: userId, role, content });
   await supabase.from("ai_conversations").update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
+}
+
+// --- לו״ז שבועי ---
+export async function getWeekSchedule(userId: string, startISO: string, endISO: string): Promise<ScheduleBlock[]> {
+  const { data } = await supabase
+    .from("weekly_schedule")
+    .select("*")
+    .eq("user_id", userId)
+    .gte("date", startISO)
+    .lte("date", endISO)
+    .order("date", { ascending: true })
+    .order("start_time", { ascending: true });
+  return (data as ScheduleBlock[]) ?? [];
+}
+
+export async function getTodaySchedule(userId: string): Promise<ScheduleBlock[]> {
+  const today = isoDate(new Date());
+  return getWeekSchedule(userId, today, today);
+}
+
+export async function addScheduleBlock(block: Omit<ScheduleBlock, "id" | "created_at" | "updated_at">) {
+  return supabase.from("weekly_schedule").insert(block);
+}
+
+export async function deleteScheduleBlock(id: string) {
+  await supabase.from("weekly_schedule").delete().eq("id", id);
+}
+
+// --- הרגלים ---
+export async function getHabitsInRange(userId: string, days: number): Promise<HabitRecord[]> {
+  const since = isoDate(subDays(new Date(), days));
+  const { data } = await supabase
+    .from("habit_tracking")
+    .select("*")
+    .eq("user_id", userId)
+    .gte("date", since)
+    .order("date", { ascending: false });
+  return (data as HabitRecord[]) ?? [];
+}
+
+export async function toggleHabitToday(userId: string, habitType: string, completed: boolean) {
+  const date = isoDate(new Date());
+  return supabase.from("habit_tracking")
+    .upsert({ user_id: userId, habit_type: habitType, date, completed }, { onConflict: "user_id,habit_type,date" });
+}
+
+// תווית עקביות ללא מספרים
+export function habitConsistencyLabel(completedDaysLast14: number): string {
+  if (completedDaysLast14 >= 10) return "הרגל יציב";
+  if (completedDaysLast14 >= 5) return "הרגל מתחיל להתייצב";
+  if (completedDaysLast14 >= 1) return "התחלת לבנות הרגל";
+  return "כדאי לחזור לרצף";
+}
+
+// --- הכנה מנטלית ---
+export async function saveMentalPrep(prep: Omit<MentalPrep, "id" | "created_at">) {
+  return supabase.from("mental_preparation").insert(prep);
+}
+
+export async function getRecentMentalPreps(userId: string, type: "training" | "match"): Promise<MentalPrep[]> {
+  const { data } = await supabase
+    .from("mental_preparation")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("type", type)
+    .order("created_at", { ascending: false })
+    .limit(5);
+  return (data as MentalPrep[]) ?? [];
+}
+
+// --- דוח יומי ---
+export async function saveDailyReport(userId: string, content: DailyReportContent) {
+  return supabase.from("daily_reports")
+    .upsert({ user_id: userId, report_date: content.date, content_json: content },
+      { onConflict: "user_id,report_date" });
+}
+
+export async function getDailyReports(userId: string, limit = 14): Promise<{ report_date: string; content_json: DailyReportContent }[]> {
+  const { data } = await supabase
+    .from("daily_reports")
+    .select("report_date, content_json")
+    .eq("user_id", userId)
+    .order("report_date", { ascending: false })
+    .limit(limit);
+  return (data as { report_date: string; content_json: DailyReportContent }[]) ?? [];
+}
+
+// --- שמירת דוחות שבועיים/חודשיים היסטורית ---
+export async function saveWeeklyReport(userId: string, content: unknown) {
+  const weekStart = isoDate(subDays(new Date(), 7));
+  return supabase.from("weekly_reports").insert({ user_id: userId, week_start: weekStart, content_json: content });
+}
+
+export async function saveMonthlyReport(userId: string, content: unknown) {
+  const label = format(new Date(), "yyyy-MM");
+  return supabase.from("monthly_reports").insert({ user_id: userId, month_label: label, content_json: content });
+}
+
+export async function getSavedWeeklyReports(userId: string) {
+  const { data } = await supabase.from("weekly_reports").select("*")
+    .eq("user_id", userId).order("created_at", { ascending: false }).limit(8);
+  return data ?? [];
+}
+
+export async function getSavedMonthlyReports(userId: string) {
+  const { data } = await supabase.from("monthly_reports").select("*")
+    .eq("user_id", userId).order("created_at", { ascending: false }).limit(6);
+  return data ?? [];
 }

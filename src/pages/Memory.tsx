@@ -1,19 +1,36 @@
 import { useEffect, useState } from "react";
+import { EyeOff } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { getMemory } from "../lib/db";
+import { getMemory, hideMemory, memoryStrength } from "../lib/db";
 import type { MemoryItem } from "../lib/types";
 import { PageHeader } from "../components/Layout";
 import { EmptyState } from "../components/Cards";
 import { Icon } from "../components/Icon";
 import { Spinner } from "../components/Loading";
 
-const KIND_STYLE: Record<string, { icon: string; color: string }> = {
-  "מטרה": { icon: "memory_goal", color: "#163A5F" },
-  "פציעה": { icon: "memory_injury", color: "#D9A441" },
-  "הרגל": { icon: "memory_habit", color: "#7FAF79" },
-  "קושי": { icon: "memory_difficulty", color: "#7fa3c6" },
-  "חוזקה": { icon: "memory_strength", color: "#7FAF79" },
-  "דפוס": { icon: "memory_pattern", color: "#a78bfa" },
+// סדר וכותרות הדומיינים
+const DOMAINS: { key: string; title: string; icon: string }[] = [
+  { key: "מקצועי", title: "דפוסים מקצועיים", icon: "goals" },
+  { key: "פיזי", title: "דפוסים פיזיים", icon: "load" },
+  { key: "מנטלי", title: "דפוסים מנטליים", icon: "mental" },
+  { key: "התאוששות", title: "דפוסי התאוששות", icon: "recovery" },
+  { key: "חיים", title: "דפוסי חיים אישיים", icon: "life" },
+  { key: "כללי", title: "כללי", icon: "insight" },
+];
+
+// מיפוי kind ל-domain כשאין domain מפורש (פריטים ישנים)
+function domainOf(it: MemoryItem): string {
+  if (it.domain) return it.domain;
+  if (it.kind === "מטרה") return "מקצועי";
+  if (it.kind === "פציעה") return "פיזי";
+  if (it.kind === "חוזקה" || it.kind === "הרגל") return "התאוששות";
+  return "כללי";
+}
+
+const STRENGTH_COLOR: Record<string, string> = {
+  "סימן ראשוני": "#7fa3c6",
+  "מגמה מתפתחת": "#D9A441",
+  "דפוס שחוזר על עצמו": "#7FAF79",
 };
 
 export default function Memory() {
@@ -26,49 +43,57 @@ export default function Memory() {
     getMemory(user.id).then((m) => { setItems(m); setLoading(false); });
   }, [user]);
 
+  async function remove(id: string) {
+    await hideMemory(id);
+    setItems((list) => list.filter((x) => x.id !== id));
+  }
+
   const firstName = (profile?.full_name || "").split(" ")[0] || "שחקן";
-  const grouped = items.reduce<Record<string, MemoryItem[]>>((acc, it) => {
-    (acc[it.kind] ||= []).push(it);
-    return acc;
-  }, {});
+  const grouped: Record<string, MemoryItem[]> = {};
+  items.forEach((it) => { const d = domainOf(it); (grouped[d] ||= []).push(it); });
 
   return (
     <div>
-      <PageHeader title="הזיכרון האישי שלך" subtitle="מה PLAYERMIND למד עליך לאורך זמן." back />
+      <PageHeader title="זיכרון אישי" subtitle="מה המערכת למדה עליך לאורך זמן." back />
 
       <div className="card mb-4" style={{ background: "var(--brand)", color: "#fff", borderColor: "var(--brand)" }}>
         <p className="text-sm leading-relaxed">
-          ככל שתשתף יותר, הזיכרון מתעדכן והתובנות הופכות אישיות יותר. זו תמונת הדפוסים,
-          החוזקות והמטרות של {firstName}.
+          זו תמונת הדפוסים, החוזקות והמטרות של {firstName}. המערכת מעדכנת אותה רק כשדפוס חוזר –
+          לא מתגובה לאירוע בודד. אם משהו לא מדויק, אפשר להסיר אותו.
         </p>
       </div>
 
       {loading ? <Spinner /> : items.length === 0 ? (
-        <EmptyState icon="memory_pattern" title="הזיכרון עוד נבנה" text="המשך למלא צ׳ק-אינים ולתעד מטרות – כאן יופיעו הדפוסים האישיים שלך." />
+        <EmptyState icon="memory_pattern" title="הזיכרון עוד נבנה"
+          text="המשך למלא צ׳ק-אינים ולתעד מטרות – כאן יופיעו הדפוסים האישיים שלך." />
       ) : (
-        <div className="space-y-5">
-          {Object.entries(grouped).map(([kind, list]) => {
-            const style = KIND_STYLE[kind] ?? { icon: "insight", color: "#94A3B8" };
-            return (
-              <div key={kind}>
-                <h2 className="mb-2 flex items-center gap-2 font-display font-bold">
-                  <span style={{ color: style.color }}><Icon name={style.icon} size={18} /></span> {kind}
-                </h2>
-                <div className="space-y-2">
-                  {list.map((it) => (
-                    <div key={it.id} className="card flex items-center justify-between py-3">
-                      <p className="text-sm leading-relaxed">{it.content}</p>
-                      {it.weight > 1 && (
-                        <span className="pill shrink-0" style={{ background: `${style.color}22`, color: "var(--text)" }}>
-                          ×{it.weight}
+        <div className="space-y-6">
+          {DOMAINS.filter((d) => grouped[d.key]?.length).map((d) => (
+            <div key={d.key}>
+              <h2 className="mb-2 flex items-center gap-2 font-display font-bold">
+                <span style={{ color: "var(--brand)" }}><Icon name={d.icon} size={18} /></span> {d.title}
+              </h2>
+              <div className="space-y-2">
+                {grouped[d.key].map((it) => {
+                  const strength = memoryStrength(it.weight);
+                  return (
+                    <div key={it.id} className="card py-3">
+                      <div className="mb-1.5 flex items-center justify-between gap-2">
+                        <span className="pill" style={{ background: `${STRENGTH_COLOR[strength]}22`, color: "var(--text)" }}>
+                          {strength}
                         </span>
-                      )}
+                        <button onClick={() => remove(it.id)}
+                          className="flex items-center gap-1 text-xs muted" aria-label="הסר מהזיכרון">
+                          <EyeOff size={14} /> זה לא נכון לגביי
+                        </button>
+                      </div>
+                      <p className="text-sm leading-relaxed">{it.content}</p>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       )}
     </div>

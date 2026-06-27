@@ -148,6 +148,7 @@ export interface Insight {
   detected: string;
   why: string;
   action: string;
+  trend?: string | null;        // עוצמת המגמה (סימן ראשוני / מגמה מתפתחת / דפוס שחוזר)
   created_at?: string;
 }
 
@@ -155,10 +156,62 @@ export interface MemoryItem {
   id: string;
   user_id: string;
   kind: string; // מטרה / פציעה / הרגל / קושי / חוזקה / דפוס
+  domain?: string | null; // מקצועי / פיזי / מנטלי / התאוששות / חיים / כללי
   content: string;
   weight: number;
+  hidden?: boolean;
   updated_at: string;
   created_at: string;
+}
+
+export interface ScheduleBlock {
+  id: string;
+  user_id: string;
+  title: string | null;
+  category: string;
+  date: string;
+  start_time: string | null;
+  end_time: string | null;
+  intensity: string | null;
+  notes: string | null;
+  recurring: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface HabitRecord {
+  id: string;
+  user_id: string;
+  habit_type: string;
+  date: string;
+  completed: boolean;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface MentalPrep {
+  id: string;
+  user_id: string;
+  type: "training" | "match";
+  date: string;
+  professional_goal: string | null;
+  mental_goal: string | null;
+  first_action: string | null;
+  focus_word: string | null;
+  obstacle: string | null;
+  response_plan: string | null;
+  team_contribution: string | null;
+  generated_card: string | null;
+  created_at: string;
+}
+
+export interface DailyReportContent {
+  date: string;
+  what_happened: string;
+  what_worked: string;
+  needs_attention: string;
+  tomorrow_action: string;
+  personal_insight: string;
 }
 
 export interface WeeklyReportContent {
