@@ -9,6 +9,8 @@ import {
   addMessage, type CoachMessage, type CoachSignals,
 } from "../lib/db";
 import { buildCoachReply, TOPICS, COACH_DISCLAIMER } from "../lib/ai/coach";
+import { buildContextText } from "../lib/ai/context";
+import { askCoach, checkAIAvailable, type BrainMessage } from "../lib/ai/brain";
 
 export default function AICoach() {
   const { user, profile } = useAuth();
@@ -19,19 +21,29 @@ export default function AICoach() {
   const [topic, setTopic] = useState("free");
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
+  const [aiAvailable, setAiAvailable] = useState(true);
+  const [contextText, setContextText] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const [sig, conv] = await Promise.all([getCoachSignals(user.id), getLatestConversation(user.id)]);
+      const [sig, conv, available, ctx] = await Promise.all([
+        getCoachSignals(user.id),
+        getLatestConversation(user.id),
+        checkAIAvailable(),
+        buildContextText(user.id, profile),
+      ]);
       setSignals(sig);
+      setAiAvailable(available);
+      setContextText(ctx);
       if (conv) {
         setConvId(conv);
         setMessages(await getMessages(conv));
       }
       setLoading(false);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
@@ -58,11 +70,16 @@ export default function AICoach() {
       id: `tmp-${Date.now()}`, conversation_id: id, user_id: user.id,
       role: "user", content: text.trim(), created_at: now,
     };
+    const history: BrainMessage[] = [...messages, userMsg].map((m) => ({
+      role: m.role === "user" ? "user" : "assistant",
+      content: m.content,
+    }));
     setMessages((m) => [...m, userMsg]);
     setInput("");
     await addMessage(user.id, id, "user", text.trim());
 
-    const reply = buildCoachReply(t, text.trim(), {
+    // מנוע החוקים כ-fallback אם אין מפתח LLM
+    const fallback = () => buildCoachReply(t, text.trim(), {
       profile,
       avgSleep: signals?.avgSleep ?? null,
       avgRecovery: signals?.avgRecovery ?? null,
@@ -72,8 +89,12 @@ export default function AICoach() {
       memory: signals?.memory ?? [],
     });
 
-    // השהיה קצרה לתחושת שיחה
-    await new Promise((r) => setTimeout(r, 450));
+    const { reply } = await askCoach({
+      topic: t, messages: history, contextText,
+      playerName: profile?.full_name?.split(" ")[0],
+      fallback,
+    });
+
     const coachMsg: CoachMessage = {
       id: `tmp-c-${Date.now()}`, conversation_id: id, user_id: user.id,
       role: "coach", content: reply, created_at: new Date().toISOString(),
@@ -114,6 +135,14 @@ export default function AICoach() {
   return (
     <div className="flex min-h-[calc(100vh-7rem)] flex-col">
       <PageHeader title="מאמן AI" subtitle="הליווי האישי שלך, כל יום." />
+
+      {/* מצב fallback – אין מפתח LLM */}
+      {!aiAvailable && (
+        <div className="mb-3 rounded-2xl px-3 py-2 text-xs leading-relaxed"
+             style={{ background: "var(--warning)", color: "#5a4a2a" }}>
+          מאמן ה-AI המתקדם עדיין לא מחובר. ניתן להשתמש בתובנות בסיסיות בלבד.
+        </div>
+      )}
 
       {/* כתב ויתור קבוע */}
       <div className="mb-3 rounded-2xl px-3 py-2 text-xs leading-relaxed"

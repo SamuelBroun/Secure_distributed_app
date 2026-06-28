@@ -75,11 +75,11 @@ export default function Memory() {
               </h2>
               <div className="space-y-2">
                 {grouped[d.key].map((it) => {
-                  const strength = memoryStrength(it.weight);
+                  const strength = it.confidence || memoryStrength(it.weight);
                   return (
                     <div key={it.id} className="card py-3">
                       <div className="mb-1.5 flex items-center justify-between gap-2">
-                        <span className="pill" style={{ background: `${STRENGTH_COLOR[strength]}22`, color: "var(--text)" }}>
+                        <span className="pill" style={{ background: `${STRENGTH_COLOR[strength] ?? "#94A3B8"}22`, color: "var(--text)" }}>
                           {strength}
                         </span>
                         <button onClick={() => remove(it.id)}
@@ -88,6 +88,7 @@ export default function Memory() {
                         </button>
                       </div>
                       <p className="text-sm leading-relaxed">{it.content}</p>
+                      {it.evidence && <p className="mt-1 text-xs muted">{it.evidence}</p>}
                     </div>
                   );
                 })}

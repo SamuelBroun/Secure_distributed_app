@@ -1094,3 +1094,10 @@ begin
     execute format('create policy "coach_select_%1$s" on public.%1$I for select using (public.is_coach_of(user_id));', t);
   end loop;
 end $$;
+
+-- ===========================================================================
+-- חלק ד' – העשרת מנוע הזיכרון (זהה ל-migrations/0005_memory_engine.sql)
+-- ===========================================================================
+alter table public.ai_memory add column if not exists confidence text; -- סימן ראשוני / מגמה מתפתחת / דפוס שחוזר על עצמו
+
+-- weight משמש כ-occurrences; updated_at משמש כ-last_seen_at.

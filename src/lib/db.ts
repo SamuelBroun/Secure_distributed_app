@@ -6,7 +6,8 @@ import type {
   SuccessJournalEntry, InjuryRecord, PlayerGoal, MemoryItem, Insight,
   ScheduleBlock, HabitRecord, MentalPrep, DailyReportContent,
 } from "./types";
-import { generateInsights, deriveMemory, recoveryScore } from "./ai/insights";
+import { generateInsights, recoveryScore } from "./ai/insights";
+import { detectPatterns } from "./ai/patterns";
 
 export const isoDate = (d: Date) => format(d, "yyyy-MM-dd");
 
@@ -75,22 +76,28 @@ export async function computeAndSaveInsights(userId: string, period: string): Pr
   const rows = insights.map((i) => ({ ...i, user_id: userId }));
   await supabase.from("insights").insert(rows);
 
-  // עדכון זיכרון אישי
-  const mem = deriveMemory(insights);
-  for (const m of mem) {
+  // עדכון זיכרון אישי מבוסס מנוע דפוסים (רק דפוסים שראויים לשמירה)
+  const patterns = detectPatterns(data).filter((p) => p.save);
+  for (const p of patterns) {
     const { data: existing } = await supabase
       .from("ai_memory")
       .select("id, weight")
       .eq("user_id", userId)
-      .eq("kind", m.kind)
-      .eq("content", m.content)
+      .eq("content", p.content)
       .maybeSingle();
+    // weight = occurrences (לא מנפחים בכל ריצה – לוקחים את המרבי)
+    const weight = existing
+      ? Math.max((existing as MemoryItem).weight, p.occurrences)
+      : p.occurrences;
+    const payload = {
+      domain: p.domain, kind: p.kind, content: p.content,
+      evidence: p.evidence, confidence: p.confidence, weight,
+      updated_at: new Date().toISOString(),
+    };
     if (existing) {
-      await supabase.from("ai_memory")
-        .update({ weight: (existing as MemoryItem).weight + 1, updated_at: new Date().toISOString() })
-        .eq("id", (existing as MemoryItem).id);
+      await supabase.from("ai_memory").update(payload).eq("id", (existing as MemoryItem).id);
     } else {
-      await supabase.from("ai_memory").insert({ user_id: userId, ...m });
+      await supabase.from("ai_memory").insert({ user_id: userId, ...payload });
     }
   }
   return insights;

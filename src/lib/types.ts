@@ -158,9 +158,11 @@ export interface MemoryItem {
   kind: string; // מטרה / פציעה / הרגל / קושי / חוזקה / דפוס
   domain?: string | null; // מקצועי / פיזי / מנטלי / התאוששות / חיים / כללי
   content: string;
-  weight: number;
+  evidence?: string | null;
+  confidence?: string | null; // סימן ראשוני / מגמה מתפתחת / דפוס שחוזר על עצמו
+  weight: number;             // occurrences
   hidden?: boolean;
-  updated_at: string;
+  updated_at: string;         // last_seen_at
   created_at: string;
 }
 
